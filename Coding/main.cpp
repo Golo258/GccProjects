@@ -1,0 +1,41 @@
+
+#include <iostream>
+#include "headers.hpp"
+
+// przyklad przestrzeni nazw
+namespace subG {
+    int print(int a, int b){
+        return a + b;
+    }
+}
+namespace divG {
+    int print(int a, int b){
+        return a - b;
+    }
+}
+
+// przyklad metody statycznej w klasie -- użycie operatora ::
+class Engine {
+    public:
+        static void start(){
+            std::cout << "Engine starting " << std::endl;
+        }
+    
+}; 
+
+
+int main(){
+    
+    std::cout << "Siemano kolano" << std::endl;
+    int subName = subG::print(2,2);
+    int divName = divG::print(2,4);
+    std::cout <<  subName << std::endl;
+    std::cout <<  divName << std::endl;
+    Engine::start();
+
+    int resolve = substraction(1,2);
+    std::cout <<  divName << std::endl;
+
+    return 0;
+}
+
