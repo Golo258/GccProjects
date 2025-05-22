@@ -93,3 +93,7 @@ Dyrektywy procesora: #
                 stałe define PI 3.14
                 pseudo funkcje -> #define DODAJ(a,b ) ((a) + (b))
                 flagi #define dodawanie_hpp -- mówi preporcesorowi że dana rzecz po prostu że makro istnieje 
+
+
+g++ main.cpp functions.cpp -o main.exe
+    linkowanie implementacji interfacu
