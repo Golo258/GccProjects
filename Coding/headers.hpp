@@ -4,4 +4,8 @@
 
 int substraction(int primary, int secondary); // only declaration 
 
+int loopAndStatements(int amount);
+
+
+
 #endif

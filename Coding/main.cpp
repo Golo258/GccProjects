@@ -35,7 +35,8 @@ int main(){
 
     int resolve = substraction(1,2);
     std::cout <<  divName << std::endl;
-
+    int amountOfWrongCountedAge = loopAndStatements(5);
+    std::cout <<  "You said less then 18 ages " << amountOfWrongCountedAge << " times. " << std::endl;
     return 0;
 }
 
