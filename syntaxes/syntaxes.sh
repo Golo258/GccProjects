@@ -97,3 +97,30 @@ Dyrektywy procesora: #
 
 g++ main.cpp functions.cpp -o main.exe
     linkowanie implementacji interfacu
+
+#-----------------
+Klasy
+    Specyfikatory dostępu   
+        public: wszedzie dostep 
+        private : tylko sama klasa, uikrytwa dane 
+        protected : sama klasa + pochodne - dziedziczaca klasa ma dostep
+    
+Konstruktory:
+    automatycznie przy utworzeniu obiektu klasy
+
+
+this -> wskaźnik na obiekt klasy 
+    this->message -- odwołujesz sie do atrybutu obiektu klasy
+    this->show - odwołujesz sie do metody klasy 
+
+Styl C++:
+    Klasy - PascalCase - MessageMenager
+    Metody: camelCase - siemanoKolano
+    zmienne: camelCase - messageValue
+    stałe / makra : UPPER_SNAKE_CASE: MAX_LENGTH
+    nazwy plikjów: snake_case  - message_manager.cpp
+
+
+void f1(std::string s);              // kopia
+void f2(std::string& s);             // referencja (ale można zmienić)
+void f3(const std::string& s);       // referencja tylko do odczytu ✅
