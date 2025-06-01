@@ -52,7 +52,6 @@ void showBasicClassesConceptions() {
     }
 }
 
-void show
 int main(){
     showBasicClassesConceptions();
     return 0;
