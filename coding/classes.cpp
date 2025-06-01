@@ -1,4 +1,4 @@
-
+/*============== IMPORTS ======================*/
 #include <iostream>
 #include "headers.hpp"
 #include <regex>
@@ -13,10 +13,8 @@ MessageManager::MessageManager(std::string message){
 std::string MessageManager::ManageInputMessage(){
     std::cout << this->message << std::endl;
     std::cin >> output;
-
     return output;
 }
-
 
 /*============== SIMPLE USER ======================*/
 
@@ -25,26 +23,37 @@ void SimpleUser::introduceYourself(){
               << " and i have " << age << " years old\n";  
 }
 
-bool SimpleUser::isPasswordStrongEnough(const std::string& password = ""){
-    std::string userPassword = password.empty() ? this->password : password;
-    
-    std::regex pattern(
-        "^(?=.*[A-Z])(?=.*\\d)(?=.*[^A-Za-z0-9]).{8,}$"
-    );
+bool SimpleUser::isPasswordStrongEnough(const std::string& pass){
+    std::string userPassword = pass.empty() ? this->password : pass;
 
+    std::regex pattern("^(?=.*[A-Za-z])(?=.*\\d).{6,}$");
     return std::regex_match(userPassword, pattern);
 }
 
-std::string SimpleUser::encriptUserPassword(){
+std::string SimpleUser::encriptUserPassword() {
     MessageManager manager("Enter your password");
-    std::string userPass = manager.ManageInputMessage();
-    if (!isPasswordStrongEnough(userPass)) {
-        std::cout << "Password to weak. Check password rules" << std::endl;
-        return;
+    std::string userPass = "";
+    while(true){
+        userPass =  manager.ManageInputMessage();
+        if (!isPasswordStrongEnough(userPass)) {
+            std::cout << "Password "<< userPass << " is too weak. Check password rules." << std::endl;
+            continue;
+        }
+        else{
+            break;
+        }
+    }
+   
+    std::string encryptedPass = "";
+    for (char c : userPass) {
+        encryptedPass += c + 3;
     }
 
-    
+    this->password = encryptedPass;
+    std::cout << "Password encrypted and stored successfully.\n";
+    return encryptedPass;
 }
+
 
 bool SimpleUser::checkUserQualifications(){
     return true;

@@ -1,7 +1,7 @@
 
 #--------------------------------------------
 # Zagadnienia
-    namespace   - przestrzeń nazw -
+- namespace   - przestrzeń nazw -
         służy do grupowania kodu /unkniecie konfliktów
         grupowanie funkcji zmiennych klas i nadanie im unikalnych nazw " imie z prefiksem"
         -- tworzone żeby uniknąc kolizji nazw
@@ -51,16 +51,13 @@ Operatory:
                 ::main - 
 
 
-    Operatory binarne:
-    << -- przesuniecie bitowe w lewo  x << 2 ( czyli x * 4)
-    >> -- przesuniecie bitowe w prawo x >> 1 ( czyli x / 2)
-
-        00011 - 3  << przesuwamy bity w lewo 00110 - 6 czyli razy 2 
-        00110 - 6   >> przesuwamy bity w prawo 00011 - 3  czyli podzieoen przez 2 
-
+    Operatory_binarne:
+    #<< -- przesuniecie bitowe w lewo  x << 2  czyli x * 4 
+    #>> -- przesuniecie bitowe w prawo x >> 1  czyli x / 2
+        #00011 - 3  << przesuwamy bity w lewo 00110 - 6 czyli razy 2 
+        #00110 - 6   >> przesuwamy bity w prawo 00011 - 3  czyli podzieoen przez 2 
 
     Przeciążanie operatorów:
-
 
 #----------------------------------
 Pliczki:

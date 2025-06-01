@@ -15,6 +15,8 @@ int substraction(int primary, int secondary); // only declaration
 int loopAndStatements(int amount);
 
 #endif
+/*============== SimpleUser ======================*/
+
 
 #ifndef BASIC_USERCLASSES
 #define BASIC_USERCLASSES
@@ -31,12 +33,14 @@ class SimpleUser {
         int age;
     
     void introduceYourself();
-    bool isPasswordStrongEnough(const std::string& pass);
+    bool isPasswordStrongEnough(const std::string& pass = "");
     std::string encriptUserPassword();
     bool checkUserQualifications();
 };
 
 #endif
+
+/*============== OldMan inherit from SimpleUser======================*/
 
 #ifndef BASIC_INHERITED_CLASSES
 #define BASIC_INHERITED_CLASSES
@@ -51,6 +55,7 @@ class OldMan: public SimpleUser{
 
 #endif
 
+/*============== MessageManager ======================*/
 #ifndef MESSAGE_ASKING_CLASS
 #define MESSAGE_ASKING_CLASS
 
