@@ -38,19 +38,23 @@ void showBasicConceptions() {
     std::cout <<  "You said less then 18 ages " << amountOfWrongCountedAge << " times. " << std::endl;
 }
 
-void showClassesConceptions() {
+void showBasicClassesConceptions() {
+    
     SimpleUser user;
     user.name = "Grzesiunia";
     user.age = 12;
     user.introduceYourself();
+    user.encriptUserPassword();
+    std::cout << "Encyrypted password set \n";
+
+    if (user.checkUserQualifications()){
+        std::cout << "User qualified.\n";
+    }
 }
 
+void show
 int main(){
-    MessageManager manager("show me the age: ");
-
-    std::string answer = manager.ManageInputMessage();
-    std::cout << "Years: " << answer << std::endl;
-
+    showBasicClassesConceptions();
     return 0;
 }
 
