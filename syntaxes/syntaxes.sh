@@ -110,6 +110,11 @@ this -> wskaźnik na obiekt klasy
     this->message -- odwołujesz sie do atrybutu obiektu klasy
     this->show - odwołujesz sie do metody klasy 
 
+    kiedy używać:
+        kiedy na przykłąd mamy setter
+        i dajemy tą samą naze parametru co atrybutu i sie robi konflikt, maskuje nam zmienną 
+
+
 Styl C++:
     Klasy - PascalCase - MessageMenager
     Metody: camelCase - siemanoKolano
@@ -121,3 +126,39 @@ Styl C++:
 void f1(std::string s);              // kopia
 void f2(std::string& s);             // referencja (ale można zmienić)
 void f3(const std::string& s);       // referencja tylko do odczytu ✅
+
+
+
+# virutal void execute()
+    wirtualna metoda: 
+        czyli żę można ją nadpisać w klasach dziedziczących po danej klasie bazowej
+            ex: virtual void execute();
+
+                # void execute() override {
+                    # std::cout << "Executing special Task\n";
+                # }
+        
+# Gettery w C++:
+    odczyt wartości prywantych pól
+        int getId() const; -- co to kurwa jest
+            to oznacza że metoda nei zmienia obiektu
+# Setter w C++:"
+    zmiana wartosci prywatnych pól
+
+
+std::string
+    typ złożony (object type)
+    kopiowanie jest kosztowne - lepiej zmieniać rzeczywisty obiekt
+
+lista inicjalizacyjna kkonstruktora:
+    Task::Task(std::string name, int priority, int duration)
+        : id(0), name(name), priority(priority), duration(duration) {}
+
+watki: 
+    lekkie wykonanie funckji rownolegle z głownym programem
+    
+        tworzenie wątków:
+            std::thread nazwaWatku(funkcja) -- rozpoczynamy watek i funkcje
+            nazwaWatku.join() -- poczekaj az funckja z watku sie skonczy
+                -- pauzuje główny watek aż sie ten dany nie skonczy
+                
