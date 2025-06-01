@@ -51,10 +51,52 @@ void showBasicClassesConceptions() {
         std::cout << "User qualified.\n";
     }
 }
-
-int main(){
-    // showBasicClassesConceptions();
+void collectionExamples(){
+    showBasicClassesConceptions();
     vectorExplanation();
+    mapsExplanation();
+    setExplanation();
+    queueExplanation();
+}
+
+void lambdaExamples(){
+    /*
+        funkcja anonimowa, nie ma nazwy, można przekazać jako obiekt 
+        składania:
+        [capture](parametesr) -> return_type { body }
+
+     */
+    auto say_hello = []() {
+        std::cout << "siemano\n";
+    };
+    say_hello();
+
+    //  with parameters
+    auto add = [](int a, int b){
+        return a + b;
+    };
+
+    std::cout << "Result " << add(2,2) << " \n";
+
+    // [] - capture list - czyli co chcemy przekazać z zewnątrz
+    // opcje [x] - kopia zmiennej, [&x] - referencja
+    //  [=]- wszystko kopia, [&] = wszystko referencja
+    int multiplier = 2;
+    auto multiply= [multiplier](int x) {
+        return x * multiplier;
+    };
+    std::cout << "Multiply result " << multiply(5) << " \n";
+
+    // z sprecyzowaniem typu
+    auto sequence = [&](int a, int b) -> int {
+        multiplier *= a;
+        return a + b * multiplier;  
+    };
+    std::cout << "Sequence result: " << sequence(2, 3) << "\n";
+    std::cout << "Multiplier after sequene: " << multiplier << "\n";
+}
+int main(){
+    lambdaExamples();
     return 0;
 }
 

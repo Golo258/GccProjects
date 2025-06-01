@@ -18,10 +18,13 @@ int loopAndStatements(int amount);
 
 /*============== collection ======================*/
 
-#ifndef VECTOR_EXAMPLES
-#define VECTOR_EXAMPLES
+#ifndef COLLECTIONS_EXAMPLES
+#define COLLECTIONS_EXAMPLES
 
 void vectorExplanation();
+void mapsExplanation();
+void setExplanation();
+void queueExplanation();
 
 #endif
 /*============== SimpleUser ======================*/

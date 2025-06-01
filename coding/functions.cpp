@@ -5,6 +5,10 @@
 #include <vector>
 #include <map>
 #include <algorithm>
+#include <unordered_map>
+#include <set>
+#include <queue>
+#include <array>
 
 int substraction(int primary, int secondary) {
     return primary + secondary + 2; 
@@ -64,14 +68,59 @@ void vectorExplanation(){
 
 }
 
-void collectionsExamples(){
-    // Mapa
-    std::map<std::string, int> ages;
+void mapsExplanation() {
+    // unordered_map -- dict w Pythonie key -> value 
+    std::unordered_map<std::string, int> ages;
     ages["John"] = 20;
     ages["Victor"] = 62;
+
+    std::cout << "John age: " << ages["John"] << std::endl; // value by key
+    // if key exists
+    if (ages.count("Victor")){
+        std:: cout << "Victor exists in map \n";
+    }
 
     for (const auto& pair: ages) {
         std::cout << pair.first << ": " << pair.second << " \n";
     }
+    ages.erase("John"); // removing
 
+}
+void setExplanation(){
+    // set zbior unilalnych wartosci ( posortowany )
+    std::set<int> numbers;
+    numbers.insert(5);
+    numbers.insert(1);
+    numbers.insert(3);
+    numbers.insert(5); // ignored- it's already in 
+    for (int n : numbers) {
+        std::cout << n << "\n";
+    }
+    // inne funckje 
+    /* 
+        insert /count /find / erase / size /empty
+    */
+}
+
+void queueExplanation(){
+    // zawsze najwiekszy na przodzie ( posortowany ) 
+    // Pod spodem: kopiec binarny (heap)
+    std::priority_queue<int> q;
+
+    q.push(5);
+    q.push(2);
+    q.push(10);
+
+    while (!q.empty()) {
+        std::cout << q.top() << "\n"; // zawsze największy
+        q.pop();
+    }
+    //  + array 
+    std::array<int, 5> nums = {4, 2, 1, 5, 3};
+
+    std::sort(nums.begin(), nums.end());
+
+    for (int x : nums) {
+        std::cout << x << " ";
+    }
 }
