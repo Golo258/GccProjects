@@ -34,6 +34,21 @@ void say_hello() {
     std::cout << "Hello from thread!\n";
 }
 
+void execute_tasks(){
+    Executor executor;
+
+    Task* t1 = new Task("Compression", 1, 2);
+    Task* t2 = new Task("Sync", 2, 1);
+    Task* t3 = new Task("Encryption", 3, 3);
+    executor.addTask(t1);
+    executor.addTask(t2);
+    executor.addTask(t3);
+    executor.processTasks();
+    delete t1;
+    delete t2;
+    delete t3;
+}
+
 /*============== MAIN FUNCTION ======================*/
 int main(){
     Task first("Email backup", 2,3);
@@ -43,5 +58,7 @@ int main(){
     std::thread th(say_hello);
     th.join();
     std::cout << "Main thread done.\n";
+
+    execute_tasks();
     return 0;
 }
