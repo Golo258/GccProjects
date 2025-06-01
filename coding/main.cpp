@@ -2,6 +2,9 @@
 #include <iostream>
 #include "headers.hpp"
 #include <regex>
+#include <memory>
+#include <array>
+#include <tuple>
 
 // przyklad przestrzeni nazw
 namespace subG {
@@ -95,8 +98,134 @@ void lambdaExamples(){
     std::cout << "Sequence result: " << sequence(2, 3) << "\n";
     std::cout << "Multiplier after sequene: " << multiplier << "\n";
 }
+
+enum class TaskStatus {
+    Pending,
+    InProgress,
+    Done,
+    Failed
+};
+
+void printStatus(TaskStatus status){
+    switch(status){
+        case TaskStatus::Pending: std::cout << "[Status] Pending\n";break;
+        case TaskStatus::InProgress: std::cout << "[Status] InProgress\n";break;
+        case TaskStatus::Done: std::cout << "[Status] Done\n";break;
+        case TaskStatus::Failed: std::cout << "[Status] Failed\n";break;
+    }
+}
+
+struct User {
+    int id;
+    std::string name;
+    int age;
+    User(int id, std::string name, int age) : id(id), name(name), age(age) {}
+    void print(){
+        std::cout << "User " << id << ": " << name << " (" << age << " y/o)\n";
+    }
+};
+
+//  funkcje generyczne
+template <typename Type>
+void printArray(const Type* array, int size) {
+    std::cout << "[ " ; 
+    for (int i = 0; i < size; ++i){
+        std::cout << array[i] << " ";
+    }
+    std::cout << "]\n";
+}
+
+// klasy generyczne
+template <typename Type>
+class Box {
+    private:
+        Type value;
+    public:
+        Box(Type v) : value(v) {}
+        Type get() const {
+            return value; 
+        }
+        void print() const {
+            std::cout << "Box holds: " << value << "\n";
+        }
+};
+
+class DevidingError: public std::exception {
+    public:
+        const char* what() const noexcept override {
+             return "What are you doing ? ";
+        }
+};
+
+//  try catch throw example
+int devide(int a, int b) {
+    if (b == 0){
+        throw std::invalid_argument("Its fogived to devide by 0");
+    }
+    return a/b;
+}
+
+//  structured bindings:
+void structureBindings() {
+    // przyklad z mapą
+    std::map<std::string, int> people = {
+        {"Maya", 24},
+        {"Leszek", 56}
+    };
+
+    for (const auto& [name, age]: people) {
+         std::cout << name << " ma " << age << " lat\n";
+    }
+}
+
+
 int main(){
     lambdaExamples();
+    TaskStatus ts = TaskStatus::Pending;
+    printStatus(ts);
+    
+    User golo = {1, "Golo", 24};
+    golo.print();
+
+    //  unique ptr
+    std::unique_ptr<User> us = std::make_unique<User>(1, "Ania", 23);
+    us->print(); // uzywane jako zwykly wskaźnik
+
+    // shared ptr - wiecej niż jeden właściciel
+    std::shared_ptr<User> shared = std::make_shared<User>(2,"Golo", 12);
+    std::shared_ptr<User> secondOwner = shared;
+    secondOwner->print();
+    
+    // funkctiosn template
+    int numbs[]  = {12,51,62,73};
+    std::string names[] = {"Robert","Alojzy","Waclaw","Marcin"};
+    printArray(numbs, 4);
+    printArray(names, 4);
+
+    // class templates
+    Box<int> intBox(42);
+    Box<std::string> strBox("Hello!");
+    intBox.print();    // Box holds: 42
+    strBox.print();
+
+    // try catch
+    try {
+        int result = devide(10, 0);
+        std::cout << result << "\n";
+    }
+    catch (const std::invalid_argument& e) {
+        std::cout << "Zły argument: " << e.what() << "\n";
+    }
+    catch(const DevidingError& ex){
+        std::cerr << "Exception " << ex.what() << "occured. \n";
+    }
+
+    // structureBindings
+    structureBindings();
+    tupleExplanation();
+    castowanie();
+    typowanie();
+    statycznosc();
     return 0;
 }
 

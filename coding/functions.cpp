@@ -9,6 +9,9 @@
 #include <set>
 #include <queue>
 #include <array>
+#include <tuple>
+#include <variant>
+#include <any>
 
 int substraction(int primary, int secondary) {
     return primary + secondary + 2; 
@@ -123,4 +126,83 @@ void queueExplanation(){
     for (int x : nums) {
         std::cout << x << " ";
     }
+}
+
+void tupleExplanation(){
+    auto tup = std::make_tuple("Siemoa", 31, true); // Tworzenie
+    std::tuple<std::string, int, double> t2 = {"Mark", 24, 51}; // trudniejsze
+
+    // dostep do elementów
+    std::string name = std::get<0>(t2); // starsze
+    auto [tupleName, age, height] = t2;
+    std::cout << name << " has " << age << " years old and \n";
+
+    //  pair - tylko dwa elementy
+    std::pair<int, std::string> para = {1, "Robert"};
+    auto [id, nameOfPair] = para;
+}
+
+void castowanie(){
+    //  stara wersja C
+    int x = 10;
+    double d = (double) x; // tak nie robimy
+
+    int iter = 24;
+    double floatIter = static_cast<double>(iter);
+    char charIter = static_cast<char>(iter);
+
+    // surowe rzutowanie bitów
+    int x2 = 5;
+    char * point = reinterpret_cast<char *> (&x2); // odczyt bajtów z inta
+
+    // modyfikacja stałej zmiennej
+    const int a = 10;
+    int&b = const_cast<int &>(a);
+    b = 20;
+}
+template<typename T>
+using Vec = std::vector<T>;
+
+union Data {
+    int i; 
+    float f;
+    char str[20];
+};
+
+void typowanie(){
+    // typedef
+    typedef const unsigned int uint;
+    typedef std::vector<std::string> stringList;
+    uint x = 5;
+    stringList names = {"Adam", "Ewa"};
+
+    // using
+    // using uint = unsigned int;
+    // using StringList = std::vector<std::string>;    
+
+    Vec<int> liczby = {1, 2, 3};        // zamiast std::vector<int>
+    Vec<std::string> imiona = {"Ania", "Kuba"};
+
+    Data data;
+    data.i = 42;
+    std::cout << "int: " << data.i << "\n";
+    data.f = 3.14;
+    std::cout << "int: " << data.i << "\n"; // bełkot 
+    std::cout << "int: " << data.f << "\n"; 
+
+    // Lepsza wersja
+    std::variant<int, float, std::string> var2;
+    var2 = 42;
+    var2 = "siemano";
+    std::cout << std::get<std::string>(var2);
+    // any 
+    std::any numb = 12;
+    std::cout << std::any_cast<int>(numb) << std::endl;
+    numb = std::string("Cześć!");
+    std::cout << std::any_cast<std::string>(numb) << "\n";
+
+}
+
+void statycznosc(){
+    
 }
