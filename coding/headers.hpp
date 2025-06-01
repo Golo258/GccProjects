@@ -25,6 +25,10 @@ void vectorExplanation();
 void mapsExplanation();
 void setExplanation();
 void queueExplanation();
+void tupleExplanation();
+void castowanie();
+void typowanie();
+void statycznosc();
 
 #endif
 /*============== SimpleUser ======================*/

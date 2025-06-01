@@ -178,3 +178,125 @@ Kolekcje w C++:
 
 Typy:
     auto: - sam zgaduje typ
+    enum - klasa enum
+        tworzenie zbioru stałych wartości
+            enum class Status {
+                Status1, Status2
+            };
+            Status s = Status::Ready
+            #  nie można konwertować do int 
+
+        służy do ograniczenia możliwych stanów/
+        czytelności kodui, decydowania w if/switch
+
+    struct - klasy ale wszystko jest publiczne
+        szybki lekki kontener na dane
+
+    smart_pointery:
+        #include <memory>
+        specjalne klasy, automatycznie zwalniająpamiec, gdy sa nie potrzebne
+            1. unique_ptr - posiada obiekt na wyłączności, -- jeden właściciel
+            2. shared_ptr - dzieli własność miedzy wielui, -- wiele rzeczy korzysta z obiektu
+            3. weak_ptr   - nie zwieksza lcizby referencji -- by zapobiec cyklicznym zależnością
+
+                std::make_unique<T>() --tworzenie 
+    templaty:
+        kod generyczny, jeden kod, ale działą na różnych typach
+            funkcje, które działają na wielu typach (np. add, printArray, min, swap)
+            klasy, których pola/metody są generyczne (np. Box<T>, Pair<K, V>, Buffer<T>)
+
+
+            template <typename T> // na funkcje 
+            T add(T a, T b) {
+                return a + b;
+            }
+
+    structure bindings:
+        rozpakowywanie obiektów na pojedyncze zmienne
+
+    tuple - jak w pythonie - paczka z różnych elementów
+
+
+Temat:
+    explicit 
+        - ochrona przed głupimi konwersjami
+            C++ lubi sam konwertować typy, czasami nie porzadzanie
+            ex:
+            # class Task {
+                # public:
+                    # explicit Task(int priority) {
+                        # std::cout << "Task(prio): " << priority << "\n";
+                    # }
+                # };
+            # run(5);         // ❌ błąd kompilacji
+            # run(Task(5));   // ✅ jawna intencja
+            Gdy masz 1-argumentowy konstruktor
+            Gdy nie chcesz, żeby Twój typ „przypadkiem” powstał z czegoś innego
+
+    try/catch/throw   -- przechwytywanie blędów 
+        klasy wyjątkow:
+            std::runtime_error
+            std::invalid_argument
+            std::out_of_range
+            std::logic_error
+                wszystkie dziedziczą po std::exception
+
+            własne wyjkątki
+            exception.what( ) -> odczyt wiadomosc
+    
+    castowanie:
+        c - (typ) zmienna - tak nie robimy
+        static_cast<type> (value) - 
+            zamiana miedzy typami podstawowymi (int double char)
+            rzutowania wskaźników w hierarchii dziedziczenia (w górę)
+            wywoływania konstruktorów, np. int -> float
+
+        dynamic_cast<type>(value)
+            - tylko dla klas wirtualnych
+            - bezpeiczne rzutowanie w dół w dziedzieniu
+                z klasy bazowej do pochodnej
+                    class Base { virtual void foo() {} };
+                    class Derived : public Base {};
+
+                    Base* b = new Derived();
+                    Derived* d = dynamic_cast<Derived*>(b); // OK
+
+        reinterpreter_cast -- surowe rzutowanie bitów
+        const_cast -- usuwa const ze zmiennej
+
+    Definiowanie typów 
+        typedef - alias nazwy typu - skrócona nazwa długiego typu  
+            - typedef const unsinged int uint;
+                uint x = 5;
+            
+        using
+            - using uint = unsinged int;
+            - using StringVec = std::vector<std::string>; 
+                template<typename T>
+                using Vec = std::vector<T>;
+
+        union:
+            - niskopiozmowe - strukutura która przechowuje 
+                jedno pole naraz, ale może byc wielu typów
+                wszystkie pola dzielą ten sam obszar pamieci
+                
+
+        variant 
+            -- bezpieczna wersaj union 
+            pamieta jaki typ jest aktualnie aktywny
+
+
+        any  -- trzymam cokolwiek
+            - przechowuje dowolny typ 
+            - moze byc odczytana przez rzutowanie
+
+    statyczność
+        static:
+            zmienna - nie znika po wyjsciu z zakresu
+            funkcja/metoda-  nie ma dostepu do this -- czyli sie odnosi do klasy nie do obiektu
+            pole w klasie - nalezy do klasy, nie do obiektu
+            
+Todo:
+    static
+    prywante rzeczy _value
+    inline 
