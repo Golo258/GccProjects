@@ -15,6 +15,15 @@ int substraction(int primary, int secondary); // only declaration
 int loopAndStatements(int amount);
 
 #endif
+
+/*============== collection ======================*/
+
+#ifndef VECTOR_EXAMPLES
+#define VECTOR_EXAMPLES
+
+void vectorExplanation();
+
+#endif
 /*============== SimpleUser ======================*/
 
 

@@ -60,7 +60,7 @@ class Executor {
         
     public:
         void addTask(Task * task);
-        vodi processTasks();
+        void processTasks();
 };
 
 #endif

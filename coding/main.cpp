@@ -53,7 +53,8 @@ void showBasicClassesConceptions() {
 }
 
 int main(){
-    showBasicClassesConceptions();
+    // showBasicClassesConceptions();
+    vectorExplanation();
     return 0;
 }
 

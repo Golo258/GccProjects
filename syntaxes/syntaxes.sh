@@ -162,3 +162,16 @@ watki:
             nazwaWatku.join() -- poczekaj az funckja z watku sie skonczy
                 -- pauzuje główny watek aż sie ten dany nie skonczy
                 
+
+Kolekcje w C++:
+    std::
+        vector -> dynamiczna lista 
+        list - lista 2kierunkowa - 
+        dequeue - double ended queue
+        queue - kolejka FIFO
+        stack - stos LIFO
+        priority_queue - kopiec (najpierw najwiekszy)
+        map -> posorotwane key -> value 
+        unordered_map - jak dict w Pytohnie
+        set - zbiór, unikalne
+        unordered__set -- to samo co set ale nieupożotkowane
