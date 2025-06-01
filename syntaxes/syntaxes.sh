@@ -175,3 +175,6 @@ Kolekcje w C++:
         unordered_map - jak dict w Pytohnie
         set - zbiór, unikalne
         unordered__set -- to samo co set ale nieupożotkowane
+
+Typy:
+    auto: - sam zgaduje typ
