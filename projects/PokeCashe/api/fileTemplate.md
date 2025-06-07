@@ -48,3 +48,14 @@ wystarczy cmake --build
 
 przy dodaniu nowych plików i zmianie 
 Cmake to robimy jeszcze cmake ..
+
+
+const na końcu funkcji
+np:
+    inline int getLevel() const {
+
+    }
+
+oznacza
+    że metoda nie zmienia żadnych pól obiektu (jego stanu)
+    
