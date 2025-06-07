@@ -8,8 +8,8 @@
 
 /*----------------- LIBRARIES -----------------------*/
 #include <iostream>
-#include "lib/httplib.h"
-#include "include/router.hpp"
+#include "httplib.h"
+#include "router.hpp"
 
 /*----------------- FUNCTIONS -----------------------*/
 int main()

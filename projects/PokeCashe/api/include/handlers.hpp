@@ -8,14 +8,21 @@
 
 /*----------------- LIBRARIES -----------------------*/
 #pragma once
-#include "lib/httplib.h"
+#include "httplib.h"
 
 void hello_world(
     const httplib::Request& request, 
     httplib::Response& response
 );
 
+void json_content(
+    const httplib::Request&request
+)
+
 /*----------------- FUNCTIONS -----------------------*/
+
+
+
 /*----------------- VARIABLES -----------------------*/
 /*-----------------  CLASSES -----------------------*/
 /*-----------------  INVOKE -----------------------*/
