@@ -30,23 +30,25 @@ class PokeBase {
                 std::string type,
                 int level
         );
-        void executeQuery(cRefString query, queryParameters& parameters = {});
+        void executeQuery(cRefString query);
         void initBase();
         void initTable(cRefString tableName);
-        void addPokemon(cRefString name,
+        std::string prepareStatement();
+        void addPokemon(std::string statement,
+                        cRefString name,
                         cRefString type,
                         int level);
         ~PokeBase();
 
         // getters
-        std::string getName() const;
-        std::string getType() const;
-        int getLevel() const;
+        inline std::string getName() const { return name; }
+        inline std::string getType() const { return type; }
+        inline int getLevel() const { return level;}
 
         // setters
-        void setName(cRefString newName);
-        void setType(cRefString newType);
-        void setLevel(int newLevel);
+        inline void setName(cRefString newName) {name = newName; }
+        inline void setType(cRefString newType) {type = newType; }
+        inline void setLevel(int newLevel)      {level = newLevel; }
 };
 
 /*-----------------  CLASSES -----------------------*/

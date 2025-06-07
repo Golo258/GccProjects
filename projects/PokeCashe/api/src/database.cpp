@@ -17,31 +17,16 @@ PokeBase::PokeBase(cRefString connectionCredentials,
     if (!connection.is_open())
         throw std::runtime_error("Failed to connect to postgreSQL Database");
     else
-        std::cout << "Connected successfully to Database";
+        std::cout << "Connected successfully to Database" << std::endl;
 }
 
-inline void PokeBase::setName(cRefString newName) { name = newName; }
-inline void PokeBase::setType(cRefString newType) { type = newType; }
-inline void PokeBase::setLevel(int newLevel) { level = newLevel; }
-
-inline std::string PokeBase::getName() const { return name; }
-inline std::string PokeBase::getType() const { return type; }
-inline int PokeBase::getLevel() const { return level; }
-
-void PokeBase::executeQuery(cRefString query, queryParameters& parameters)
+void PokeBase::executeQuery(cRefString query)
 {
     try
     {
         pqxx::work transaction(connection);
-        if(parameters.empty()){
-            transaction.exec(query);
-        }
-        else{
-            
-            transaction.exec_prepared(query, );
-        }
+        transaction.exec(query);
         transaction.commit();
-
         std::cout << "Query executed successfully" << std::endl;
     }
     catch (const std::exception &e)
@@ -70,13 +55,32 @@ void PokeBase::initTable(cRefString tableName)
     executeQuery(query);
 }
 
-void PokeBase::addPokemon(cRefString name,
+std::string PokeBase::prepareStatement()
+{
+    connection.prepare("add_pokemon",
+                       "INSERT INTO pokemons (name, type,level) VALUES($1, $2, $3)");
+    return "add_pokemon";
+}
+void PokeBase::addPokemon(std::string statement,
+                          cRefString name,
                           cRefString type,
                           int level)
 {
-
+    try
+    {
+        pqxx::work transaction(connection);
+        transaction.exec_prepared(statement, name, type, level);
+        transaction.commit();
+        std::cout << "Adding pokemons successfully";
+    }
+    catch (const std::exception &e)
+    {
+        std::cerr << "Error: " << e.what() << '\n';
+    }
 }
-
+PokeBase::~PokeBase(){
+    std::cout << "Closing connection. Ending session";
+}
 /*-----------------  CLASSES -----------------------*/
 /*-----------------  INVOKE -----------------------*/
 /*----------------- VARIABLES -----------------------*/
