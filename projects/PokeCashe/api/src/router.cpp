@@ -17,6 +17,7 @@ void setup_routes(httplib::Server &server)
 {
     server.Get("/", hello_world);
     server.Get("/hello", json_content);
+    // server.Get("/add", add_pokemon);
 
     server.Get("/docs", [](cRequest request, Response response){
             std::ifstream indexFile("frontend/index.html");
