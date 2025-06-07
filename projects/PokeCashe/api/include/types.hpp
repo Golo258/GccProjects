@@ -12,6 +12,8 @@
 #include <string>
 #include "json.hpp"
 #include <fstream>
+#include <vector>
+
 /*----------------- VARIABLES -----------------------*/
 
 typedef const httplib::Request& cRequest;
