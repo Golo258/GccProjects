@@ -7,9 +7,9 @@
 
 /*----------------- LIBRARIES -----------------------*/
 #pragma once
-#include "lib/httplib.h"
+#include "httplib.h"
 
-void setup_router(
+void setup_routes(
     httplib::Server& server
 );
 

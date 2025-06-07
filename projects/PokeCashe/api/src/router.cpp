@@ -6,15 +6,18 @@
 */
 
 /*----------------- LIBRARIES -----------------------*/
-#include "include/router.hpp"
-#include "include/handlers.hpp"
+#include "router.hpp"
+#include "handlers.hpp"
 
+/*----------------- FUNCTIONS -----------------------*/
+/*
+    
+*/
 void setup_routes(httplib::Server &server)
 {
     server.Get("/", hello_world);
 }
 
-/*----------------- FUNCTIONS -----------------------*/
 /*----------------- VARIABLES -----------------------*/
 /*-----------------  CLASSES -----------------------*/
 /*-----------------  INVOKE -----------------------*/
