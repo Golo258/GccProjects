@@ -295,8 +295,13 @@ Temat:
             zmienna - nie znika po wyjsciu z zakresu
             funkcja/metoda-  nie ma dostepu do this -- czyli sie odnosi do klasy nie do obiektu
             pole w klasie - nalezy do klasy, nie do obiektu
-            
-Todo:
-    static
-    prywante rzeczy _value
-    inline 
+
+            w pliku - ta zmienna ma widocznośc tylko tego pliku
+
+    inline:
+        sugestia dla kompilatora, wklej ciało funckji tam gdzie jest wywoływana
+        mówi kompilatorowi:
+            „Zamiast skakać do tej funkcji — wklej mi jej kod TU, w miejscu użycia.”
+            czyli z int x = add(2, 3);
+            robi w praktyce;
+                int x = 2 + 3;
