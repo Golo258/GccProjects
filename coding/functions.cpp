@@ -203,6 +203,21 @@ void typowanie(){
 
 }
 
+class StaticTask {
+    public:
+        static int totalTasks;
+        StaticTask() {++totalTasks; }
+
+        //  nie ma dostepu do this 
+        static void log(const std::string& message){
+             std::cout << "[LOG] " << message << "\n";
+        }
+};
+int StaticTask::totalTasks = 0;
+
 void statycznosc(){
-    
+    static int counter = 0; // zachowana wartosc miedzy wywołaniami
+    ++counter;
+    std::cout << counter << "\n"; 
+    StaticTask::log("great message"); // mozna wywołąć bez tworzenia obiektu
 }
