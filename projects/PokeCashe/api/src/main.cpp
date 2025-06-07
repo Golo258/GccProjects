@@ -7,7 +7,6 @@
 */
 
 /*----------------- LIBRARIES -----------------------*/
-#include <iostream>
 #include "httplib.h"
 #include "router.hpp"
 
