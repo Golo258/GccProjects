@@ -9,13 +9,17 @@
 #pragma once
 #include "types.hpp"
 #include <pqxx/pqxx>
+#include <variant>
+
 /*----------------- VARIABLES -----------------------*/
 typedef const std::string& cRefString;
+typedef std::variant<int, double, std::string> queryParameter;
+typedef std::vector<queryParameter> queryParameters;
 /*----------------- FUNCTIONS -----------------------*/
 
 class PokeBase {
     private:
-        pqxx::connection conn; // has to be init 
+        pqxx::connection connection; // has to be init 
         std::string name;
         std::string type;
         int level;
@@ -26,9 +30,9 @@ class PokeBase {
                 std::string type,
                 int level
         );
-        void executeQuery();
+        void executeQuery(cRefString query, queryParameters& parameters = {});
         void initBase();
-        void initTables();
+        void initTable(cRefString tableName);
         void addPokemon(cRefString name,
                         cRefString type,
                         int level);
