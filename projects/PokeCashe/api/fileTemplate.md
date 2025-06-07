@@ -36,4 +36,15 @@ W drugim Cmake:
 
     add_executable -- tworzy plik wykonynwalny o danej nazwie
         używając danych źródeł
-        
+
+
+budowanie 
+cd build
+cmake ..
+cmake --build .
+
+// przy każdym dodaniu nowych rzeczy do hpp / cpp
+wystarczy cmake --build
+
+przy dodaniu nowych plików i zmianie 
+Cmake to robimy jeszcze cmake ..

@@ -1,28 +1,24 @@
 
 /*--------------- DOCUMENTATION -----------------------
 
-    This class is used to declare the server endpoints
-    registration which will be declare and used in .cpp files
-
+    This class is used to declare  how the server
+    should behave after user send some request
 */
 
 /*----------------- LIBRARIES -----------------------*/
 #pragma once
-#include "httplib.h"
-
+#include "types.hpp"
+/*----------------- FUNCTIONS -----------------------*/
 void hello_world(
-    const httplib::Request& request, 
-    httplib::Response& response
+    cRequest request, 
+    Response response
 );
 
 void json_content(
-    const httplib::Request&request
-)
+    cRequest request, 
+    Response response
+);
 
-/*----------------- FUNCTIONS -----------------------*/
-
-
-
-/*----------------- VARIABLES -----------------------*/
 /*-----------------  CLASSES -----------------------*/
 /*-----------------  INVOKE -----------------------*/
+/*----------------- VARIABLES -----------------------*/
