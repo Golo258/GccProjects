@@ -38,6 +38,7 @@ class PokeBase {
                         cRefString name,
                         cRefString type,
                         int level);
+        bool tableExists(cRefString tableName);
         ~PokeBase();
 
         // getters

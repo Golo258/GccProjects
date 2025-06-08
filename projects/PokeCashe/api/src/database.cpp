@@ -78,7 +78,27 @@ void PokeBase::addPokemon(std::string statement,
         std::cerr << "Error: " << e.what() << '\n';
     }
 }
-PokeBase::~PokeBase(){
+
+bool PokeBase::tableExists(cRefString tableName)
+{
+    try{
+        pqxx::work transaction(connection);
+        pqxx::result result = transaction.exec(
+            "SELECT to_regclass('" + tableName + "');"
+        );
+
+        if (!result.empty() && !result[0][0].is_null()){
+            return true;
+        }
+    }
+    catch(std::exception& ex) {
+        std::cerr << "Table existence check failed " << ex.what() << std::endl;
+    }
+    return false;
+}
+
+PokeBase::~PokeBase()
+{
     std::cout << "Closing connection. Ending session";
 }
 /*-----------------  CLASSES -----------------------*/

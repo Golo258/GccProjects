@@ -17,14 +17,15 @@ void setup_routes(httplib::Server &server)
 {
     server.Get("/", hello_world);
     server.Get("/hello", json_content);
-    // server.Get("/add", add_pokemon);
+    server.Get("/create-table", create_table);
+    server.Get("/add-pokemon", add_pokemon);
 
     server.Get("/docs", [](cRequest request, Response response){
             std::ifstream indexFile("frontend/index.html");
             std::stringstream buffer;
             buffer << indexFile.rdbuf();
             response.set_content(
-                buffer.str(), mTypeToString(MediaType::HTML)  
+                buffer.str(), mediaTypeToString(MediaType::HTML)  
             );
     });
     server.set_mount_point("/docs/static" ,"./frontend");
@@ -40,7 +41,7 @@ void setup_routes(httplib::Server &server)
         std::stringstream buffer;
         buffer << yamlFile.rdbuf();
         response.set_content(
-            buffer.str(), mTypeToString(MediaType::YAML)
+            buffer.str(), mediaTypeToString(MediaType::YAML)
         );
     });
 
