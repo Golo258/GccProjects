@@ -27,7 +27,7 @@ enum class MediaType {
     YAML
 };
 
-inline std::string mTypeToString(MediaType type){
+inline std::string mediaTypeToString(MediaType type){
     switch (type) {
         case MediaType::JSON: return "application/json";
         case MediaType::TEXT: return "text/plain";

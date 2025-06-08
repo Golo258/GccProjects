@@ -8,17 +8,15 @@
 /*----------------- LIBRARIES -----------------------*/
 #pragma once
 #include "types.hpp"
+#include "database.hpp"
+
+extern PokeBase database;
 /*----------------- FUNCTIONS -----------------------*/
-void hello_world(
-    cRequest request, 
-    Response response
-);
+void hello_world(cRequest request, Response response);
 
-void json_content(
-    cRequest request, 
-    Response response
-);
+void json_content(cRequest request, Response response);
 
-/*-----------------  CLASSES -----------------------*/
-/*-----------------  INVOKE -----------------------*/
-/*----------------- VARIABLES -----------------------*/
+void create_table(cRequest request, Response response);
+
+void add_pokemon(cRequest request, Response response);
+

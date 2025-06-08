@@ -11,6 +11,7 @@ paths:
       responses:
         '200':
           description: Returns hello world
+
   /hello:
     get:
       summary: Return JSON greeting with optional name
@@ -32,3 +33,52 @@ paths:
                   message:
                     type: string
 
+  /create-table:
+    get:
+      summary: Create a new table in the database
+      parameters:
+        - in: query
+          name: name
+          schema:
+            type: string
+          required: true
+          description: Name of the table to create
+      responses:
+        '200':
+          description: Table created successfully
+          content:
+            text/plain:
+              schema:
+                type: string
+        '400':
+          description: Missing parameter
+
+  /add-pokemon:
+    post:
+      summary: Add a new Pokémon to the database
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              required:
+                - name
+                - type
+                - level
+              properties:
+                name:
+                  type: string
+                type:
+                  type: string
+                level:
+                  type: integer
+      responses:
+        '200':
+          description: Pokémon added successfully
+          content:
+            text/plain:
+              schema:
+                type: string
+        '400':
+          description: Invalid input
