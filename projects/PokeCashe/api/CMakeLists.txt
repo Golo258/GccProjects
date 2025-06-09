@@ -13,4 +13,5 @@ find_package(PkgConfig REQUIRED)
 pkg_check_modules(PQXX REQUIRED libpqxx)
 
 # Add source code
+add_subdirectory(test)
 add_subdirectory(src)

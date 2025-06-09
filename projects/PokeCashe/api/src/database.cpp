@@ -7,8 +7,9 @@
 
 /*----------------- LIBRARIES -----------------------*/
 #include "database.hpp"
-
-/*----------------- FUNCTIONS -----------------------*/
+/*----------------- VARIABLES -----------------------*/
+// NONE FOR NOW
+/*----------------- CLASS METHODS -----------------------*/
 PokeBase::PokeBase(cRefString connectionCredentials,
                    std::string name,
                    std::string type,
@@ -101,6 +102,3 @@ PokeBase::~PokeBase()
 {
     std::cout << "Closing connection. Ending session";
 }
-/*-----------------  CLASSES -----------------------*/
-/*-----------------  INVOKE -----------------------*/
-/*----------------- VARIABLES -----------------------*/
