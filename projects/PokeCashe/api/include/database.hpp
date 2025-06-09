@@ -15,8 +15,7 @@
 typedef const std::string& cRefString;
 typedef std::variant<int, double, std::string> queryParameter;
 typedef std::vector<queryParameter> queryParameters;
-/*----------------- FUNCTIONS -----------------------*/
-
+/*-----------------  CLASSES -----------------------*/
 class PokeBase {
     private:
         pqxx::connection connection; // has to be init 
@@ -52,5 +51,3 @@ class PokeBase {
         inline void setLevel(int newLevel)      {level = newLevel; }
 };
 
-/*-----------------  CLASSES -----------------------*/
-/*-----------------  INVOKE -----------------------*/
