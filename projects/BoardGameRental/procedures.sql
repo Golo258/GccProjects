@@ -14,7 +14,7 @@ BEGIN
     BEGIN TRY
         BEGIN TRANSACTION;
 
-        -- Sprawd�, czy u�ytkownik istnieje
+        -- Check whether user exists
         IF NOT EXISTS (SELECT 1 FROM Users WHERE UserID = @UserID)
         BEGIN
             RAISERROR('User does not exist.', 16, 1);
@@ -22,7 +22,7 @@ BEGIN
             RETURN;
         END
 
-        -- Sprawd�, czy gra istnieje i jest dost�pna
+        -- Check whether the game exists and is available
         DECLARE @AvailableCopies INT;
 
         SELECT @AvailableCopies = AvailableCopies
@@ -43,21 +43,21 @@ BEGIN
             RETURN;
         END
 
-        -- Dodaj wypo�yczenie na 7 dni
+        -- Add rental for 7 days
         DECLARE @Today DATE = GETDATE();
         DECLARE @Due DATE = DATEADD(DAY, 7, @Today);
 
         INSERT INTO Rentals (UserID, GameID, RentalDate, DueDate)
         VALUES (@UserID, @GameID, @Today, @Due);
 
-        -- Pobierz ID nowo dodanego wypo�yczenia
+        -- Get ID of the newly inserted rental
         DECLARE @RentalID INT = SCOPE_IDENTITY();
 
-        -- Dodaj wpis do loga
+        -- Insert log entry
         INSERT INTO RentalLogs (RentalID, Operation)
         VALUES (@RentalID, 'RENT');
 
-        -- Zmniejsz dost�pne egzemplarze
+        -- Decrease available copies
         UPDATE Games
         SET AvailableCopies = AvailableCopies - 1
         WHERE GameID = @GameID;
@@ -76,8 +76,15 @@ END;
 -- USAGE EXAMPLE:
 EXEC RentGame @UserID = 6, @GameID = 21;
 
+-- check whether it is created
+SELECT 
+    Rentals.RentalDate, Rentals.GameID, Games.Title
+FROM Rentals
+LEFT JOIN Games ON Rentals.GameID = Games.GameID
+WHERE Rentals.UserID = 6;
 
 --------------
+GO
 CREATE PROCEDURE ReturnGame
     @RentalID INT
 AS
@@ -87,7 +94,7 @@ BEGIN
     BEGIN TRY
         BEGIN TRANSACTION;
 
-        -- Sprawd�, czy wypo�yczenie istnieje
+        -- - Check if the rental exists
         IF NOT EXISTS (SELECT 1 FROM Rentals WHERE RentalID = @RentalID)
         BEGIN
             RAISERROR('Rental does not exist.', 16, 1);
@@ -95,7 +102,7 @@ BEGIN
             RETURN;
         END
 
-        -- Sprawd�, czy ju� zosta�o zwr�cone
+        -- Check if the rental has already been returned
         IF EXISTS (
             SELECT 1 FROM Rentals
             WHERE RentalID = @RentalID AND ReturnDate IS NOT NULL
@@ -106,24 +113,24 @@ BEGIN
             RETURN;
         END
 
-        -- Pobierz GameID z wypo�yczenia
+        --  Get GameID from the rental
         DECLARE @GameID INT;
 
         SELECT @GameID = GameID
         FROM Rentals
         WHERE RentalID = @RentalID;
 
-        -- Ustaw dzisiejszy dzie� jako ReturnDate
+        --Set today's date as ReturnDate
         UPDATE Rentals
         SET ReturnDate = GETDATE()
         WHERE RentalID = @RentalID;
 
-        -- Zwi�ksz dost�pne egzemplarze
+        --  Increase available copies
         UPDATE Games
         SET AvailableCopies = AvailableCopies + 1
         WHERE GameID = @GameID;
 
-        -- Dodaj wpis do RentalLogs
+        -- Insert entry into RentalLogs
         INSERT INTO RentalLogs (RentalID, Operation)
         VALUES (@RentalID, 'RETURN');
 
@@ -139,9 +146,15 @@ END;
 
 -- USAGE
 
-EXEC ReturnGame @RentalID = 25;
+EXEC ReturnGame @RentalID = 2;
 
+SELECT 
+    Rentals.RentalID, Rentals.GameID, Rentals.UserID, Games.Title, Rentals.ReturnDate
+FROM Rentals
+LEFT JOIN Games ON Rentals.GameID=Games.GameID
+WHERE  Rentals.GameID = 7;
 -----------------------------
+GO
 CREATE PROCEDURE ExtendRental
     @RentalID INT,
     @ExtraDays INT
@@ -152,7 +165,7 @@ BEGIN
     BEGIN TRY
         BEGIN TRANSACTION;
 
-        -- Sprawd�, czy wypo�yczenie istnieje i nie zosta�o ju� zwr�cone
+        --  Check if rental exists and hasn't been returned yet
         IF NOT EXISTS (
             SELECT 1 FROM Rentals
             WHERE RentalID = @RentalID AND ReturnDate IS NULL
@@ -163,7 +176,7 @@ BEGIN
             RETURN;
         END
 
-        -- Sprawd�, czy ju� by�o przed�u�ane (czyli czy istnieje wpis w logach z 'EXTEND')
+        -- Check if it was already extended (i.e. there's a log entry with 'EXTEND')
         IF EXISTS (
             SELECT 1 FROM RentalLogs
             WHERE RentalID = @RentalID AND Operation LIKE 'EXTEND %'
@@ -174,12 +187,12 @@ BEGIN
             RETURN;
         END
 
-        -- Przed�u� termin o podan� liczb� dni
+        -- Extend the due date by the given number of days
         UPDATE Rentals
         SET DueDate = DATEADD(DAY, @ExtraDays, DueDate)
         WHERE RentalID = @RentalID;
 
-        -- Dodaj wpis do loga
+        --  Insert a log entry
         DECLARE @LogText NVARCHAR(50) = CONCAT('EXTEND +', @ExtraDays);
 
         INSERT INTO RentalLogs (RentalID, Operation)
@@ -196,9 +209,12 @@ BEGIN
 END;
 
 -- USAGE
-EXEC ExtendRental @RentalID = 12, @ExtraDays = 5;
+EXEC ExtendRental @RentalID = 13, @ExtraDays = 5;
+
+SELECT * FROM RentalLogs;
 
 -----------------------------------
+GO
 CREATE PROCEDURE ReportLostGame
     @RentalID INT
 AS
@@ -208,7 +224,7 @@ BEGIN
     BEGIN TRY
         BEGIN TRANSACTION;
 
-        -- Sprawd�, czy wypo�yczenie istnieje i nie zosta�o ju� zwr�cone
+        --- Check if rental exists and hasn't been returned yet
         IF NOT EXISTS (
             SELECT 1 FROM Rentals
             WHERE RentalID = @RentalID AND ReturnDate IS NULL
@@ -219,26 +235,26 @@ BEGIN
             RETURN;
         END
 
-        -- Pobierz GameID z wypo�yczenia
+        -- Get GameID from the rental
         DECLARE @GameID INT;
 
         SELECT @GameID = GameID
         FROM Rentals
         WHERE RentalID = @RentalID;
 
-        -- Zako�cz wypo�yczenie jako zagubione
+        -- Mark the rental as lost (set ReturnDate)
         UPDATE Rentals
         SET ReturnDate = GETDATE()
         WHERE RentalID = @RentalID;
 
-        -- Zmniejsz ca�kowit� i dost�pn� liczb� kopii
+        --  Decrease total and available copies
         UPDATE Games
         SET
             TotalCopies = CASE WHEN TotalCopies > 0 THEN TotalCopies - 1 ELSE 0 END,
             AvailableCopies = CASE WHEN AvailableCopies > 0 THEN AvailableCopies - 1 ELSE 0 END
         WHERE GameID = @GameID;
 
-        -- Loguj zdarzenie
+        --  Log the event
         INSERT INTO RentalLogs (RentalID, Operation)
         VALUES (@RentalID, 'LOST');
 

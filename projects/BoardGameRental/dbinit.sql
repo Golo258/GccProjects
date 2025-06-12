@@ -108,7 +108,7 @@ VALUES
 ('UNO', 4, 8, 6),
 ('Azul', 5, 5, 5),
 ('Dungeons & Dragons', 6, 2, 2),
-('P�dz�ce ��wie', 7, 6, 4),
+('Piodz�ce ��wie', 7, 6, 4),
 ('Robinson Crusoe', 8, 3, 1),
 ('Terraformacja Marsa', 9, 4, 3),
 ('Jaipur', 10, 2, 2),
