@@ -11,6 +11,7 @@ CREATE TABLE RentalsJson (
     JsonData NVARCHAR(MAX)
 );
 
+GO
 CREATE PROCEDURE GenerateUserRentalsJson
 AS
 BEGIN

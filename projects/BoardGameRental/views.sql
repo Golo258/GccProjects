@@ -1,8 +1,7 @@
 
 USE BoardGameRental;
+
 GO
-
-
 CREATE VIEW ActiveRentalsView AS
 SELECT
     r.RentalID,
@@ -21,6 +20,7 @@ SELECT * FROM ActiveRentalsView;
 
 
 --------------------
+GO
 CREATE VIEW OverdueRentalsView AS
 SELECT
     r.RentalID,
@@ -40,7 +40,7 @@ WHERE r.ReturnDate IS NULL
 -- USAGE
 SELECT * FROM OverdueRentalsView;
 
-
+GO
 CREATE VIEW MostPopularGamesView AS
 SELECT
     g.GameID,
