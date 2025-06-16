@@ -305,3 +305,107 @@ Temat:
             czyli z int x = add(2, 3);
             robi w praktyce;
                 int x = 2 + 3;
+
+
+
+/*--------------- DOCUMENTATION -----------------------*/
+/*----------------- LIBRARIES -----------------------*/
+/*----------------- FUNCTIONS -----------------------*/
+/*----------------- VARIABLES -----------------------*/
+/*-----------------  CLASSES -----------------------*/
+/*-----------------  INVOKE -----------------------*/
+
+Czyli tak:
+    Cmake jak używać:
+        Pomaga ci w zbudowaniu i zlinkowaniu całego projektu
+
+Tworzymy sobie pliczek CMakeLists.txt - 1 w głównym katalogu
+    cmake_minum_requirted(VERSION 3.14)
+        projekt wymaga co wersji 3.14 conajmniej do budowania 
+
+    project() -- defniujesz nazwe / wersje / jezyk projektu
+        np: PokeAi
+            VERSION 0.1
+            CXX - czyli jezyk to C++
+
+    set(CMAKE_CXX_STANDARD 17) -- ustawiasz jaka wersja c++ ma być
+
+    # ważne
+    include_directories() 
+        - mówi kompilatorowi żeby szukał nagłowków hpp h w tych katalogach -- nie trzeba pisać w kodzie include/plik.hpp
+
+    add_subdirectory()
+        - mowi że w src/ jest inny Cmake z defniicją kompilowania
+    
+
+W drugim Cmake:
+    on mówi z których plików budujemy aplikacje
+
+    set() - tworzy zmienna o nazwie SOURCES 
+        i wrzucaqmy do niej dane pliki 
+
+    add_executable -- tworzy plik wykonynwalny o danej nazwie
+        używając danych źródeł
+
+
+budowanie 
+cd build
+cmake ..
+cmake --build .
+
+// przy każdym dodaniu nowych rzeczy do hpp / cpp
+wystarczy cmake --build
+
+przy dodaniu nowych plików i zmianie 
+Cmake to robimy jeszcze cmake ..
+
+
+const na końcu funkcji
+np:
+    inline int getLevel() const {
+
+    }
+
+oznacza
+    że metoda nie zmienia żadnych pól obiektu (jego stanu)
+    
+    
+
+#  exmaplanation of Makefile
+# Tworzymy katalogi, jeśli ich nie ma
+$(shell mkdir -p $(BIN_DIR) $(OBJ_DIR))
+
+## bierze wszystkie pliki .cpp
+SOURCES = $(wildcard $(SRC_DIR)/*.cpp) 
+OBJECTS := $(patsubst $(SRC_DIR)/%.cpp,$(OBJ_DIR)/%.o,$(SOURCES))
+# zamienic .cpp na .o i wpierdol do build
+
+all: $(TARGET)
+
+# żegy zbudować target potrzebuje mieć OBJECTS
+$(TARGET): $(OBJECTS) 
+	$(CXX) $(CXXFLAGS) -o $(TARGET) $^
+
+# żeby zrobić .o to potrzebuje .cpp
+$(OBJ_DIR)/%.o: $(SRC_DIR)/%.cpp 	
+	$(CXX) $(CXXFLAGS) -c $< -o $@
+
+
+# flagi dla kompilatora 
+# standard c++17 | pokazuj ostrzżenia | dodaj folder include do nagłówków
+# gdzie znajduje sie kod 
+# build # gdzie wpierdalamy pliki .o
+# bin = # miejsce pliku .exe wykonywujacego
+
+# flagi 
+# -c -> g++ -c src/main.cpp - skompiluj tylko - compile only
+# -o -> g++ -c src/main.cpp -o main.o - zapisz wynik tutaj
+# .o - object file, plik obiektowy, skompilowany kod z jednego .cpp
+# ale jeszcze nie połaczony w całość
+
+
+# CXX | i flagi to spoko -o zapisuje do pliku bin
+# $^ -- bierze wszystkie zależności żeby zbuidować target czyli OBJECTS
+# $@- nazwa celu np/bin/notekeeper
+# $< pierwsza zależność
+# % - dowolna nazwa 
