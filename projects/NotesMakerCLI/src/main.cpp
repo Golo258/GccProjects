@@ -4,26 +4,38 @@
 
 int main(){
     NoteManager manager;
-    std::string command;
+    std::string output;
 
     while (true) {
-        std::cout << "\nCommands: add, show, clear, exit\n> ";
-        std::cin >> command;
-
-        if (command == "add") {
-            std::cin.ignore();
-            std::string note;
-            std::cout << "Enter note: ";
-            std::getline(std::cin, note);
-            manager.addNote(note);
-        } else if (command == "show") {
-            manager.showNotes();
-        } else if (command == "clear") {
-            manager.clearNotes();
-        } else if (command == "exit") {
-            break;
-        } else {
-            std::cout << "Unknown command.";
+        std::cout << "\nCommands: add, show, search, clear, exit\n> ";
+        std::cin >> output;
+        ManagerChoice choice = stringToEnum(output);
+        switch (choice) {
+            case ManagerChoice::ADD: {
+                std::cin.ignore();
+                std::string note;
+                std::cout << "Enter note: ";
+                std::getline(std::cin, note);
+                manager.addNote(note);
+                break;
+            } 
+            case ManagerChoice::SHOW: {
+                manager.showNotes();
+                break;
+            }
+            case ManagerChoice::SEARCH: {
+                manager.searchNote();
+                break;
+            }
+            case ManagerChoice::CLEAR: {
+                manager.clearNotes();
+                break;
+            }
+            case ManagerChoice::EXIT: {
+                std::cout << "Closing program. Bye" << std::endl;
+                break;
+            }
+            
         }
     }
 

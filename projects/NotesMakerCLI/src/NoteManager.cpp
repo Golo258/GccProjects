@@ -7,7 +7,6 @@
 #include <fstream>
 
 const std::string notesFilePath = "static/saved_notes.txt";
-// TODO: zapis i odczyt danej notatki 
 // TODO: wyszukiwanie notatek po słowie kluczowym
 // TODO: dodawanie notatek z daną kategoria
 // TODO: usuwanie danej notatki po indexie
@@ -48,8 +47,24 @@ void NoteManager::showNotes() const {
     }
 }
 
+ManagerChoice stringToEnum(const std::string& option) {
+    if (option == "ADD") return ManagerChoice::ADD;
+    if (option == "SHOW") return ManagerChoice::SHOW;
+    if (option == "SEARCH") return ManagerChoice::SEARCH;
+    if (option == "CLEAR") return ManagerChoice::CLEAR;
+    if (option == "EXIT") return ManagerChoice::EXIT;
+    throw std::invalid_argument("Invalid option given");
+}
+
+void NoteManager::searchNote(){
+}
+
 void NoteManager::clearNotes() {
     notes.clear();
     std::cout << "All notes cleared" << std::endl;
+
+    std::ofstream fileCleaner(notesFilePath, std::ofstream::out | std::ofstream::trunc);
+    fileCleaner.close();
+
 }
 
