@@ -62,9 +62,7 @@ void NoteManager::searchNote(){
 void NoteManager::clearNotes() {
     notes.clear();
     std::cout << "All notes cleared" << std::endl;
-
     std::ofstream fileCleaner(notesFilePath, std::ofstream::out | std::ofstream::trunc);
     fileCleaner.close();
-
 }
 
