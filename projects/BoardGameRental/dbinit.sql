@@ -24,7 +24,7 @@ CREATE TABLE Games (
     CategoryID INT FOREIGN KEY REFERENCES Categories(CategoryID),
     TotalCopies INT NOT NULL,
     AvailableCopies INT NOT NULL
-);
+);      
 --
 CREATE TABLE Rentals (
     RentalID INT IDENTITY(1,1) PRIMARY KEY,

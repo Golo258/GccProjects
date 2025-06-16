@@ -18,7 +18,7 @@ BEGIN
         IF NOT EXISTS (SELECT 1 FROM Users WHERE UserID = @UserID)
         BEGIN
             RAISERROR('User does not exist.', 16, 1);
-            ROLLBACK TRANSACTION;
+            -- ROLLBACK TRANSACTION;
             RETURN;
         END
 
@@ -32,14 +32,12 @@ BEGIN
         IF @AvailableCopies IS NULL
         BEGIN
             RAISERROR('Game does not exist.', 16, 1);
-            ROLLBACK TRANSACTION;
             RETURN;
         END
 
         IF @AvailableCopies <= 0
         BEGIN
             RAISERROR('No available copies of this game.', 16, 1);
-            ROLLBACK TRANSACTION;
             RETURN;
         END
 
@@ -67,8 +65,8 @@ BEGIN
     BEGIN CATCH
         ROLLBACK TRANSACTION;
 
-        DECLARE @ErrorMessage NVARCHAR(4000) = ERROR_MESSAGE();
-        RAISERROR(@ErrorMessage, 16, 1);
+        -- DECLARE @ErrorMessage NVARCHAR(4000) = ERROR_MESSAGE();
+        RAISERROR(ERROR_MESSAGE(), 16, 1);
     END CATCH
 END;
 
@@ -98,8 +96,6 @@ BEGIN
         IF NOT EXISTS (SELECT 1 FROM Rentals WHERE RentalID = @RentalID)
         BEGIN
             RAISERROR('Rental does not exist.', 16, 1);
-            ROLLBACK TRANSACTION;
-            RETURN;
         END
 
         -- Check if the rental has already been returned
@@ -109,8 +105,6 @@ BEGIN
         )
         BEGIN
             RAISERROR('Game has already been returned.', 16, 1);
-            ROLLBACK TRANSACTION;
-            RETURN;
         END
 
         --  Get GameID from the rental
@@ -139,8 +133,8 @@ BEGIN
     BEGIN CATCH
         ROLLBACK TRANSACTION;
 
-        DECLARE @ErrorMessage NVARCHAR(4000) = ERROR_MESSAGE();
-        RAISERROR(@ErrorMessage, 16, 1);
+        -- DECLARE @ErrorMessage NVARCHAR(4000) = /();
+        RAISERROR(ERROR_MESSAGE(), 16, 1);
     END CATCH
 END;
 
@@ -269,3 +263,121 @@ BEGIN
 END;
 
 EXEC ReportLostGame @RentalID = 14;
+
+SELECT *
+FROM RentalLogs
+WHERE RentalID = 14
+
+
+GO
+CREATE PROCEDURE AddGame
+    @Title VARCHAR(100),
+    @CategoryName NVARCHAR(100)
+AS
+BEGIN
+    SET NOCOUNT ON;
+    
+    BEGIN TRY
+        BEGIN TRANSACTION;
+        -- Check whether GAME exists
+        IF EXISTS(
+            SELECT 1 FROM Games
+            WHERE Title=@Title
+        )
+        BEGIN
+            PRINT('Game already exists, not created one, update existing copies.');
+            UPDATE Games
+            SET TotalCopies = TotalCopies + 1, AvailableCopies = AvailableCopies + 1
+            WHERE Title=@Title
+            COMMIT TRANSACTION;
+            RETURN;
+        END
+
+        DECLARE @NewGameCategoryId INT
+
+        SELECT @NewGameCategoryId = Categories.CategoryID
+        FROM Games
+        LEFT JOIN Categories ON Categories.CategoryID = Games.CategoryID
+        WHERE Categories.CategoryName=@CategoryName;
+
+
+        INSERT Games(Title, CategoryID, TotalCopies, AvailableCopies)
+        VALUES(@Title, @NewGameCategoryId, 1, 1);
+
+        COMMIT TRANSACTION;
+    END TRY
+    BEGIN CATCH
+        ROLLBACK TRANSACTION;
+        DECLARE @ErrorMessage NVARCHAR(4000) = ERROR_MESSAGE();
+        
+        RAISERROR(@ErrorMessage, 16, 1);
+    END CATCH
+END
+
+SELECT *FROM Categories;
+
+EXEC AddGame @Title="majong123", @CategoryName="Logiczne"
+
+GO
+CREATE PROCEDURE AddGame
+    @Title VARCHAR(100),
+    @CategoryName NVARCHAR(100)
+AS
+BEGIN
+    SET NOCOUNT ON;
+
+    BEGIN TRY
+        BEGIN TRANSACTION;
+
+        -- Jeœli gra ju¿ istnieje ? tylko inkrementuj kopie
+        IF EXISTS (
+            SELECT 1 FROM Games
+            WHERE Title = @Title
+        )
+        BEGIN
+            PRINT('Game already exists. Incrementing number of copies.');
+            
+            UPDATE Games
+            SET TotalCopies = TotalCopies + 1,
+                AvailableCopies = AvailableCopies + 1
+            WHERE Title = @Title;
+
+            COMMIT TRANSACTION;
+            RETURN;
+        END
+
+        DECLARE @CategoryID INT;
+
+        -- Szukamy ID kategorii
+        SELECT @CategoryID = CategoryID
+        FROM Categories
+        WHERE CategoryName = @CategoryName;
+
+        -- if not exists- creating one 
+        IF @CategoryID IS NULL
+        BEGIN
+            PRINT('Category does not exist. Creating one.');
+            INSERT INTO Categories(CategoryName)
+            VALUES (@CategoryName);
+
+            SET @CategoryID = SCOPE_IDENTITY();
+        END
+
+        -- Dodajemy now¹ grê z 1 kopi¹
+        INSERT INTO Games (Title, CategoryID, TotalCopies, AvailableCopies)
+        VALUES (@Title, @CategoryID, 1, 1);
+
+        COMMIT TRANSACTION;
+    END TRY
+    BEGIN CATCH
+        ROLLBACK TRANSACTION;
+
+        RAISERROR(@@ERROR_MESSAGE() ,16, 1);
+    END CATCH
+END;
+
+
+EXEC AddGame @Title="maslo123", @CategoryName="superfajna"
+
+SELECT * FROM Games;
+
