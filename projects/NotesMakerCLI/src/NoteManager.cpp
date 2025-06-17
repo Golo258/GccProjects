@@ -24,15 +24,33 @@ Category::Category(cRefStr categoryName, cRefStr categoryDescription ){
     description = categoryDescription;
 }
 
-void NoteManager::addNote(const std::string& newNote) {
+std::ostream& operator<<(std::ostream& outputStream, cRefCategory category){
+    outputStream << "Category: " 
+                 << category.getName() << " - "
+                 << category.getDescription();
+    return outputStream;
+}
+
+std::ostream& operator<<(std::ostream& outputStream, const Note& note){
+    outputStream << "Note: " 
+                 << note.content << " - "
+                 << note.category;
+    return outputStream;
+}
+
+void NoteManager::addNote(cRefStr noteContent, cRefCategory noteCategory) {
     std::ofstream notesSender(notesFilePath, std::ios::app);
-    if(newNote.length() > 0){
-        notes.push_back(newNote);
+    if(noteContent.length() > 0 
+        && !noteCategory.getName().empty()
+        && !noteCategory.getDescription().empty()
+        )
+    {
+        notes.emplace_back(noteContent, noteCategory); // create object base on type
         if (!notesSender) {
             std::cout << "Cannot save note to file named: " << notesFilePath << " probably it doesn't exists";
         }
         else{
-            notesSender << newNote << std::endl;
+            notesSender << noteContent << " : " << noteCategory << std::endl;
         }
     }
     else {
@@ -46,7 +64,7 @@ void NoteManager::showNotes() const {
     std::ifstream notesLoader(notesFilePath);
     std::cout << "------------ Notes ------------ " << std::endl;
     for (size_t iter = 0; iter < notes.size(); iter++) {
-        std::cout <<  "Note: " <<  iter + 1  << ": " << notes[iter] << std::endl;
+        std::cout << notes[iter] << std::endl;
     }
     std::cout << "Reading from file " << std::endl;
     if (notesLoader.is_open()) {
@@ -84,7 +102,7 @@ void NoteManager::searchNote(std::string patternPart){
     std::regex pattern(".*"+patternPart + ".*");
     bool isPresent = false;
     for (const auto& note: notes){
-        if (std::regex_match(note, pattern)){
+        if (std::regex_match(note.content, pattern)){
             std::cout << "Note: " << note << " is present in notes" << std::endl; 
             isPresent = true;
         }
@@ -92,3 +110,9 @@ void NoteManager::searchNote(std::string patternPart){
     if(!isPresent) std::cout << "Word " << patternPart << " is not present in notes\n";
 }
 
+std::string getUserOutput(std::string message) {
+    std::string takenOutput;
+    std::cout << message << std::endl;
+    std::getline(std::cin, takenOutput);
+    return takenOutput;
+}

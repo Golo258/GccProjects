@@ -3,6 +3,7 @@
 #pragma once
 #include <vector>
 #include <string>
+#include <iostream>
 
 /*-----------------  CLASSES -----------------------*/
 
@@ -13,8 +14,8 @@ enum class ManagerChoice {
     CLEAR,
     EXIT
 };
-
 typedef const std::string& cRefStr; 
+
 ManagerChoice stringToEnum(std::string option);
 
 class Category {
@@ -41,16 +42,32 @@ class Category {
             else
                 std::cout << "Category description should not be empty";    
         };
+    friend std::ostream& operator<<(std::ostream& outputStream, const Category& category);
 
+};
+typedef const Category& cRefCategory;
+
+struct Note {
+    std::string content;
+    Category category;
+
+    Note(cRefStr noteContent, cRefCategory noteCategory){
+        content = noteContent;
+        category = noteCategory;
+    }
+    friend std::ostream& operator<<(std::ostream& outputStream, const Note& note);
+    
 };
 
 class NoteManager {
     private: 
-        std::vector<std::string> notes;
+        std::vector<Note> notes;
   
     public: 
-        void addNote(const std::string & note);
+        void addNote(cRefStr noteContent, cRefCategory noteCategory);
         void showNotes() const; // 
         void clearNotes();  
         void searchNote(std::string patternPart);
 };
+
+std::string getUserOutput(std::string message); 
