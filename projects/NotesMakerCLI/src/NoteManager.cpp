@@ -5,11 +5,25 @@
 #include "NoteManager.hpp"
 #include <iostream>
 #include <fstream>
+#include <regex>
+#include <algorithm>
+#include <cctype>
+
 
 const std::string notesFilePath = "static/saved_notes.txt";
-// TODO: wyszukiwanie notatek po słowie kluczowym
 // TODO: dodawanie notatek z daną kategoria
 // TODO: usuwanie danej notatki po indexie
+Category::Category()
+{
+    name = "";
+    description = "";
+}
+
+Category::Category(cRefStr categoryName, cRefStr categoryDescription ){
+    name = categoryName;
+    description = categoryDescription;
+}
+
 void NoteManager::addNote(const std::string& newNote) {
     std::ofstream notesSender(notesFilePath, std::ios::app);
     if(newNote.length() > 0){
@@ -47,7 +61,10 @@ void NoteManager::showNotes() const {
     }
 }
 
-ManagerChoice stringToEnum(const std::string& option) {
+ManagerChoice stringToEnum(std::string option) {
+    for (char& letter : option) {
+        letter = std::toupper(static_cast<unsigned char>(letter));
+    }
     if (option == "ADD") return ManagerChoice::ADD;
     if (option == "SHOW") return ManagerChoice::SHOW;
     if (option == "SEARCH") return ManagerChoice::SEARCH;
@@ -56,13 +73,22 @@ ManagerChoice stringToEnum(const std::string& option) {
     throw std::invalid_argument("Invalid option given");
 }
 
-void NoteManager::searchNote(){
-}
-
 void NoteManager::clearNotes() {
     notes.clear();
     std::cout << "All notes cleared" << std::endl;
     std::ofstream fileCleaner(notesFilePath, std::ofstream::out | std::ofstream::trunc);
     fileCleaner.close();
+}
+
+void NoteManager::searchNote(std::string patternPart){
+    std::regex pattern(".*"+patternPart + ".*");
+    bool isPresent = false;
+    for (const auto& note: notes){
+        if (std::regex_match(note, pattern)){
+            std::cout << "Note: " << note << " is present in notes" << std::endl; 
+            isPresent = true;
+        }
+    }
+    if(!isPresent) std::cout << "Word " << patternPart << " is not present in notes\n";
 }
 

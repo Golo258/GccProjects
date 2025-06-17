@@ -5,8 +5,8 @@
 int main(){
     NoteManager manager;
     std::string output;
-
-    while (true) {
+    bool isRunning = true;
+    while (isRunning) {
         std::cout << "\nCommands: add, show, search, clear, exit\n> ";
         std::cin >> output;
         ManagerChoice choice = stringToEnum(output);
@@ -19,12 +19,16 @@ int main(){
                 manager.addNote(note);
                 break;
             } 
-            case ManagerChoice::SHOW: {
-                manager.showNotes();
+            case ManagerChoice::SEARCH: {
+                std::cin.ignore();
+                std::string searchedNote;
+                std::cout << "Enter note to search for: ";
+                std::getline(std::cin, searchedNote);
+                manager.searchNote(searchedNote);
                 break;
             }
-            case ManagerChoice::SEARCH: {
-                manager.searchNote();
+            case ManagerChoice::SHOW: {
+                manager.showNotes();
                 break;
             }
             case ManagerChoice::CLEAR: {
@@ -33,6 +37,7 @@ int main(){
             }
             case ManagerChoice::EXIT: {
                 std::cout << "Closing program. Bye" << std::endl;
+                isRunning = false;
                 break;
             }
             
