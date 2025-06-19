@@ -9,8 +9,19 @@
 #include <algorithm>
 #include <cctype>
 
+// TODO: load / save
+// TODO: dodanie serializacji obiektów do pliku, np jsona / xmla
+// TODO: przy starcie programu wczytać do obiektu elementy z pliku 
+// czyli zdeserializować obiekt z pliku do obiektu programu w vectorze
+// TODO: opcja edytowania notatki wzgledem ID 
+// TODO: zmiana struktury danych z vectora na Mape<int ,Note>
+// TODO: dodanie Unit Testów do programu, coś innego niż te google test możę
+// TODO: dodanie loggera zamiast std:cout 
+// TODO: dodanie daty i godziny do notatki <ctime>
+
 
 const std::string notesFilePath = "static/saved_notes.txt";
+const std::string notesJsonPath = "static/saved_notes.json";
 int Note::nextId = 0; // init static structure attrbiut
 
 Category::Category()
@@ -23,6 +34,21 @@ Category::Category(cRefStr categoryName, cRefStr categoryDescription ){
     name = categoryName;
     description = categoryDescription;
 }
+
+json Category::toJson() const {
+    return json{
+        {"name", name},
+        {"description", description}
+    };
+}
+
+Category Category::fromJson(const json& j){
+    return Category(
+        j.at("name"),
+        j.at("description")
+    );
+}
+
 
 std::ostream& operator<<(std::ostream& outputStream, cRefCategory category){
     outputStream << "Category: " 
@@ -39,6 +65,44 @@ std::ostream& operator<<(std::ostream& outputStream, const Note& note){
     return outputStream;
 }
 
+json Note::toJson() const {
+    return json{
+        {"id", id},
+        {"content", content},
+        {"category", category.toJson()},
+    };
+}
+
+Note Note::from_json(const json& j) {
+    return Note(
+        j.at("id").get<int>(),
+        j.at("content"),
+        Category::fromJson(j.at("category"))
+    );
+}
+
+NoteManager::NoteManager(){
+    std::ifstream savedJsonNotes(notesJsonPath);
+    if (!savedJsonNotes.is_open()){
+        std::cout << "No saved jSon notes found in files" << std::endl;
+        return;
+    }
+
+    json jsonNotes;
+    savedJsonNotes >> jsonNotes;
+    savedJsonNotes.close();
+
+    for (const auto& jsonNote: jsonNotes){
+        Note savedNote = Note::from_json(jsonNote);
+        notes.push_back(savedNote);
+        noteMap[savedNote.id] = savedNote;
+
+        if (savedNote.id >= Note::nextId){
+            Note::nextId = savedNote.id + 1;
+        }
+
+    }
+}
 void NoteManager::addNote(cRefStr noteContent, cRefCategory noteCategory) {
     std::ofstream notesSender(notesFilePath, std::ios::app);
     if(noteContent.length() > 0 
@@ -46,7 +110,22 @@ void NoteManager::addNote(cRefStr noteContent, cRefCategory noteCategory) {
         && !noteCategory.getDescription().empty()
         )
     {
-        notes.emplace_back(noteContent, noteCategory); // create object base on type
+        Note newNote(noteContent, noteCategory);
+        notes.push_back(newNote); // create object base on type
+        noteMap[newNote.id] = newNote;
+        json jsoNote = newNote.toJson();
+        std::ifstream currentNotesFile(notesJsonPath);
+        json allNotes;
+        if (currentNotesFile.is_open()){
+            currentNotesFile >> allNotes;
+            currentNotesFile.close();
+        }
+        allNotes.push_back(jsoNote);
+        std::ofstream jsonNotes(notesJsonPath);
+        if (jsonNotes.is_open()) {
+             jsonNotes << allNotes.dump(4);
+             jsonNotes.close();
+        }
         if (!notesSender) {
             std::cout << "Cannot save note to file named: " << notesFilePath << " probably it doesn't exists";
         }
@@ -128,4 +207,24 @@ void NoteManager::removeNote(int noteId) {
         ),
         notes.end()
     );
+    noteMap.erase(noteId);
+}
+
+
+void newThingsToRemember(){
+
+    // input file -- wejśćie - czyli do czytania
+    std::ifstream inputFile(notesFilePath); 
+    // output file - wyjśćie, czyli do pisania
+    std::string fileData; 
+    if (inputFile.is_open()){
+        inputFile >> fileData; // z plik --> do zmiennej
+        inputFile.close();
+    }
+    std::ofstream outputFile(notesFilePath);
+    if (outputFile.is_open()){
+        outputFile << "Something new"; // pliczek <--- jakies rzeczy 
+        outputFile.close();
+    }
+
 }

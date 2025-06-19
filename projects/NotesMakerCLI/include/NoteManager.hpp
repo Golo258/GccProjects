@@ -4,7 +4,11 @@
 #include <vector>
 #include <string>
 #include <iostream>
+#include <map>
+#include <unordered_map>
+#include "json.hpp"
 
+typedef nlohmann::json  json;
 /*-----------------  CLASSES -----------------------*/
 
 enum class ManagerChoice {
@@ -43,6 +47,10 @@ class Category {
             else
                 std::cout << "Category description should not be empty";    
         };
+        json toJson() const;
+        static Category fromJson(const json& j); // metoda należy do klasy nie do obiektu 
+
+
     friend std::ostream& operator<<(std::ostream& outputStream, const Category& category);
 
 };
@@ -54,20 +62,30 @@ struct Note {
     std::string content;
     Category category;
 
+    Note() = default; // default konstructor
     Note(cRefStr noteContent, cRefCategory noteCategory){
+        id = nextId++;
         content = noteContent;
         category = noteCategory;
-        id = nextId++;        // TODO: fix it 
+    }
+    Note(int givenId, cRefStr noteContent, cRefCategory noteCategor){
+        id = givenId;
+        if (givenId >= nextId){
+            nextId = givenId + 1;
+        }
+
     }
     friend std::ostream& operator<<(std::ostream& outputStream, const Note& note);
-    
+    json  toJson() const;
+    static Note from_json(const json& j);
 };
 
 class NoteManager {
     private: 
         std::vector<Note> notes;
-  
+        std::unordered_map<int, Note> noteMap;
     public: 
+        NoteManager();
         void addNote(cRefStr noteContent, cRefCategory noteCategory);
         void showNotes() const; // 
         void clearNotes();  
@@ -76,3 +94,4 @@ class NoteManager {
 };
 
 std::string getUserOutput(std::string message); 
+void newThingsToRemember();
