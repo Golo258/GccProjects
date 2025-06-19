@@ -45,6 +45,14 @@ int main(){
                     manager.removeNote(convertedId);
                     break;
                 }
+                case ManagerChoice::EDIT: {
+                    std::cin.ignore();
+                    std::string idToRemoval = getUserOutput("Enter note id to edit: ");
+                    std::cout << "ID to removal : " << idToRemoval << std::endl;
+                    int convertedId = std::stoi(idToRemoval);
+                    manager.editNote(convertedId);
+                    break;
+                }
                 case ManagerChoice::EXIT: {
                     std::cout << "Closing program. Bye" << std::endl;
                     isRunning = false;

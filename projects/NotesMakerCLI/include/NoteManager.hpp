@@ -17,6 +17,7 @@ enum class ManagerChoice {
     SEARCH,
     CLEAR,
     REMOVE,
+    EDIT,
     EXIT
 };
 typedef const std::string& cRefStr; 
@@ -91,6 +92,7 @@ class NoteManager {
         void clearNotes();  
         void searchNote(std::string patternPart);
         void removeNote(int noteId);
+        void editNote(int noteId);
 };
 
 std::string getUserOutput(std::string message); 

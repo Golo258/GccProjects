@@ -9,10 +9,6 @@
 #include <algorithm>
 #include <cctype>
 
-// TODO: load / save
-// TODO: dodanie serializacji obiektów do pliku, np jsona / xmla
-// TODO: przy starcie programu wczytać do obiektu elementy z pliku 
-// czyli zdeserializować obiekt z pliku do obiektu programu w vectorze
 // TODO: opcja edytowania notatki wzgledem ID 
 // TODO: zmiana struktury danych z vectora na Mape<int ,Note>
 // TODO: dodanie Unit Testów do programu, coś innego niż te google test możę
@@ -168,6 +164,7 @@ ManagerChoice stringToEnum(std::string option) {
     if (option == "SEARCH") return ManagerChoice::SEARCH;
     if (option == "REMOVE") return ManagerChoice::REMOVE;
     if (option == "CLEAR") return ManagerChoice::CLEAR;
+    if (option == "EDIT") return ManagerChoice::EDIT;
     if (option == "EXIT") return ManagerChoice::EXIT;
     throw std::invalid_argument("Invalid option given");
 }
@@ -210,6 +207,12 @@ void NoteManager::removeNote(int noteId) {
     noteMap.erase(noteId);
 }
 
+// TODO: finish implementing this
+void NoteManager::editNote(int noteToEditId){
+    for(auto note: notes){
+        if (note)
+    }
+}
 
 void newThingsToRemember(){
 
