@@ -12,6 +12,7 @@ enum class ManagerChoice {
     SHOW,
     SEARCH,
     CLEAR,
+    REMOVE,
     EXIT
 };
 typedef const std::string& cRefStr; 
@@ -48,12 +49,15 @@ class Category {
 typedef const Category& cRefCategory;
 
 struct Note {
+    static int nextId;
+    int id;
     std::string content;
     Category category;
 
     Note(cRefStr noteContent, cRefCategory noteCategory){
         content = noteContent;
         category = noteCategory;
+        id = nextId++;        // TODO: fix it 
     }
     friend std::ostream& operator<<(std::ostream& outputStream, const Note& note);
     
@@ -68,6 +72,7 @@ class NoteManager {
         void showNotes() const; // 
         void clearNotes();  
         void searchNote(std::string patternPart);
+        void removeNote(int noteId);
 };
 
 std::string getUserOutput(std::string message); 

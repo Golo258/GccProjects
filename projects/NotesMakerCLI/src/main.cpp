@@ -7,7 +7,7 @@ int main(){
     std::string output;
     bool isRunning = true;
     while (isRunning) {
-        std::cout << "\nCommands: add, show, search, clear, exit\n> ";
+        std::cout << "\nCommands: add, show, search, remove, clear, exit\n> ";
         std::cin >> output;
         try {
             ManagerChoice choice = stringToEnum(output);
@@ -35,6 +35,14 @@ int main(){
                 }
                 case ManagerChoice::CLEAR: {
                     manager.clearNotes();
+                    break;
+                }
+                case ManagerChoice::REMOVE: {
+                    std::cin.ignore();
+                    std::string idToRemoval = getUserOutput("Enter note id to remove: ");
+                    std::cout << "ID to removal : " << idToRemoval << std::endl;
+                    int convertedId = std::stoi(idToRemoval);
+                    manager.removeNote(convertedId);
                     break;
                 }
                 case ManagerChoice::EXIT: {
