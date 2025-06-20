@@ -69,12 +69,13 @@ struct Note {
         content = noteContent;
         category = noteCategory;
     }
-    Note(int givenId, cRefStr noteContent, cRefCategory noteCategor){
+    Note(int givenId, cRefStr noteContent, cRefCategory noteCategory){
         id = givenId;
         if (givenId >= nextId){
             nextId = givenId + 1;
         }
-
+        content = noteContent;
+        category = noteCategory;
     }
     friend std::ostream& operator<<(std::ostream& outputStream, const Note& note);
     json  toJson() const;

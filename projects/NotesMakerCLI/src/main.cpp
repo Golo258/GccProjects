@@ -7,7 +7,7 @@ int main(){
     std::string output;
     bool isRunning = true;
     while (isRunning) {
-        std::cout << "\nCommands: add, show, search, remove, clear, exit\n> ";
+        std::cout << "\nCommands: add, show, search, remove, edit, clear, exit\n> ";
         std::cin >> output;
         try {
             ManagerChoice choice = stringToEnum(output);

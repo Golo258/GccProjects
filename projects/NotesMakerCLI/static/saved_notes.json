@@ -1,18 +1,18 @@
 [
     {
         "category": {
-            "description": "nie zapomnij sobie",
-            "name": "super wazna"
+            "description": "zapomnij",
+            "name": "wazna"
         },
-        "content": "ale to beda kurwa jaja",
+        "content": "ale to nie beda",
         "id": 0
     },
     {
         "category": {
-            "description": "cza isc se cos zjesc",
-            "name": "wazniejsza"
+            "description": "zjec",
+            "name": "cos "
         },
-        "content": "jeszcze jedna ale wazniejsza",
+        "content": "wez se ",
         "id": 1
     },
     {
@@ -30,5 +30,21 @@
         },
         "content": "siemano kolano",
         "id": 3
+    },
+    {
+        "category": {
+            "description": "fajna",
+            "name": "notateczka"
+        },
+        "content": "note",
+        "id": 4
+    },
+    {
+        "category": {
+            "description": "co tam",
+            "name": "kolano"
+        },
+        "content": "siemano",
+        "id": 5
     }
 ]

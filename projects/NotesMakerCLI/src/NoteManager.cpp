@@ -99,6 +99,7 @@ NoteManager::NoteManager(){
 
     }
 }
+
 void NoteManager::addNote(cRefStr noteContent, cRefCategory noteCategory) {
     std::ofstream notesSender(notesFilePath, std::ios::app);
     if(noteContent.length() > 0 
@@ -209,9 +210,32 @@ void NoteManager::removeNote(int noteId) {
 
 // TODO: finish implementing this
 void NoteManager::editNote(int noteToEditId){
-    for(auto note: notes){
-        if (note)
+    for(Note& note: notes){
+        if (note.id == noteToEditId) {
+            std::cout << "Current note" << note << std::endl;
+            std::string newContent = getUserOutput("Enter new content");
+            std::string newCategoryName = getUserOutput("Enter new category name (leave empty to keep current): ");
+            std::string newCategoryDescription = getUserOutput("Enter new category description (leave empty to keep current): ");
+
+            if (!newContent.empty()) note.content = newContent;
+            if (!newCategoryName.empty()) note.category.setName(newCategoryName);
+            if (!newCategoryDescription.empty()) note.category.setDescription(newCategoryDescription);
+
+            noteMap[note.id] = note;
+
+            json updatedJson = json::array();
+            for (const Note& note: notes){
+                updatedJson.push_back(note.toJson());
+            }
+            
+            std::ofstream jsonFile(notesJsonPath);
+            jsonFile << updatedJson.dump(4);
+            jsonFile.close();
+            std::cout << "Note updated" << std::endl;
+            return;
+        }
     }
+    std::cout << "Note with id: " << noteToEditId << "not found" << std::endl;
 }
 
 void newThingsToRemember(){
