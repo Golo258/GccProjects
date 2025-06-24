@@ -7,7 +7,7 @@
 #include <map>
 #include <unordered_map>
 #include "json.hpp"
-
+#include "Logger.hpp"
 typedef nlohmann::json  json;
 /*-----------------  CLASSES -----------------------*/
 

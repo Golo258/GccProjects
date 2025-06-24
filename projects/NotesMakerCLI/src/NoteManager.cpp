@@ -3,61 +3,50 @@
 /*----------------- CLASS METHODS  -----------------------*/
 
 #include "NoteManager.hpp"
-#include <iostream>
-#include <fstream>
-#include <regex>
+
 #include <algorithm>
 #include <cctype>
+#include <fstream>
+#include <iostream>
+#include <regex>
 
-// TODO: opcja edytowania notatki wzgledem ID 
+// TODO: opcja edytowania notatki wzgledem ID
 // TODO: zmiana struktury danych z vectora na Mape<int ,Note>
 // TODO: dodanie Unit Testów do programu, coś innego niż te google test możę
-// TODO: dodanie loggera zamiast std:cout 
+// TODO: dodanie loggera zamiast std:cout
 // TODO: dodanie daty i godziny do notatki <ctime>
-
 
 const std::string notesFilePath = "static/saved_notes.txt";
 const std::string notesJsonPath = "static/saved_notes.json";
-int Note::nextId = 0; // init static structure attrbiut
+int Note::nextId = 0;  // init static structure attrbiut
 
-Category::Category()
-{
+Category::Category() {
     name = "";
     description = "";
 }
 
-Category::Category(cRefStr categoryName, cRefStr categoryDescription ){
+Category::Category(cRefStr categoryName, cRefStr categoryDescription) {
     name = categoryName;
     description = categoryDescription;
 }
 
 json Category::toJson() const {
-    return json{
-        {"name", name},
-        {"description", description}
-    };
+    return json{{"name", name}, {"description", description}};
 }
 
-Category Category::fromJson(const json& j){
-    return Category(
-        j.at("name"),
-        j.at("description")
-    );
+Category Category::fromJson(const json& j) {
+    return Category(j.at("name"), j.at("description"));
 }
 
-
-std::ostream& operator<<(std::ostream& outputStream, cRefCategory category){
-    outputStream << "Category: " 
-                 << category.getName() << " - "
-                 << category.getDescription();
+std::ostream& operator<<(std::ostream& outputStream, cRefCategory category) {
+    outputStream << "Category: " << category.getName() << " - " << category.getDescription();
     return outputStream;
 }
 
-std::ostream& operator<<(std::ostream& outputStream, const Note& note){
-    outputStream << "Note: " 
+std::ostream& operator<<(std::ostream& outputStream, const Note& note) {
+    outputStream << "Note: "
                  << "ID: " << note.id << ": "
-                 << "Content:" << note.content << " - "
-                 << note.category;
+                 << "Content:" << note.content << " - " << note.category;
     return outputStream;
 }
 
@@ -70,16 +59,12 @@ json Note::toJson() const {
 }
 
 Note Note::from_json(const json& j) {
-    return Note(
-        j.at("id").get<int>(),
-        j.at("content"),
-        Category::fromJson(j.at("category"))
-    );
+    return Note(j.at("id").get<int>(), j.at("content"), Category::fromJson(j.at("category")));
 }
 
-NoteManager::NoteManager(){
+NoteManager::NoteManager() {
     std::ifstream savedJsonNotes(notesJsonPath);
-    if (!savedJsonNotes.is_open()){
+    if (!savedJsonNotes.is_open()) {
         std::cout << "No saved jSon notes found in files" << std::endl;
         return;
     }
@@ -88,49 +73,42 @@ NoteManager::NoteManager(){
     savedJsonNotes >> jsonNotes;
     savedJsonNotes.close();
 
-    for (const auto& jsonNote: jsonNotes){
+    for (const auto& jsonNote : jsonNotes) {
         Note savedNote = Note::from_json(jsonNote);
         notes.push_back(savedNote);
         noteMap[savedNote.id] = savedNote;
 
-        if (savedNote.id >= Note::nextId){
+        if (savedNote.id >= Note::nextId) {
             Note::nextId = savedNote.id + 1;
         }
-
     }
 }
 
 void NoteManager::addNote(cRefStr noteContent, cRefCategory noteCategory) {
     std::ofstream notesSender(notesFilePath, std::ios::app);
-    if(noteContent.length() > 0 
-        && !noteCategory.getName().empty()
-        && !noteCategory.getDescription().empty()
-        )
-    {
+    if (noteContent.length() > 0 && !noteCategory.getName().empty() && !noteCategory.getDescription().empty()) {
         Note newNote(noteContent, noteCategory);
-        notes.push_back(newNote); // create object base on type
+        notes.push_back(newNote);  // create object base on type
         noteMap[newNote.id] = newNote;
         json jsoNote = newNote.toJson();
         std::ifstream currentNotesFile(notesJsonPath);
         json allNotes;
-        if (currentNotesFile.is_open()){
+        if (currentNotesFile.is_open()) {
             currentNotesFile >> allNotes;
             currentNotesFile.close();
         }
         allNotes.push_back(jsoNote);
         std::ofstream jsonNotes(notesJsonPath);
         if (jsonNotes.is_open()) {
-             jsonNotes << allNotes.dump(4);
-             jsonNotes.close();
+            jsonNotes << allNotes.dump(4);
+            jsonNotes.close();
         }
         if (!notesSender) {
             std::cout << "Cannot save note to file named: " << notesFilePath << " probably it doesn't exists";
-        }
-        else{
+        } else {
             notesSender << noteContent << " : " << noteCategory << std::endl;
         }
-    }
-    else {
+    } else {
         std::cout << "Note is empty or too small " << std::endl;
     }
 
@@ -150,8 +128,7 @@ void NoteManager::showNotes() const {
             std::cout << "File note: " << line << std::endl;
         }
         notesLoader.close();
-    }
-    else {
+    } else {
         std::cout << "Unable to open file " << notesFilePath << std::endl;
     }
 }
@@ -177,16 +154,16 @@ void NoteManager::clearNotes() {
     fileCleaner.close();
 }
 
-void NoteManager::searchNote(std::string patternPart){
-    std::regex pattern(".*"+patternPart + ".*");
+void NoteManager::searchNote(std::string patternPart) {
+    std::regex pattern(".*" + patternPart + ".*");
     bool isPresent = false;
-    for (const auto& note: notes){
-        if (std::regex_match(note.content, pattern)){
-            std::cout << "Note: " << note << " is present in notes" << std::endl; 
+    for (const auto& note : notes) {
+        if (std::regex_match(note.content, pattern)) {
+            std::cout << "Note: " << note << " is present in notes" << std::endl;
             isPresent = true;
         }
     }
-    if(!isPresent) std::cout << "Word " << patternPart << " is not present in notes\n";
+    if (!isPresent) std::cout << "Word " << patternPart << " is not present in notes\n";
 }
 
 std::string getUserOutput(std::string message) {
@@ -197,25 +174,20 @@ std::string getUserOutput(std::string message) {
 }
 
 void NoteManager::removeNote(int noteId) {
-    notes.erase(
-        std::remove_if(notes.begin(), notes.end(),
-            [noteId](const Note& note){
-                return note.id == noteId;
-            }
-        ),
-        notes.end()
-    );
+    notes.erase(std::remove_if(notes.begin(), notes.end(), [noteId](const Note& note) { return note.id == noteId; }),
+                notes.end());
     noteMap.erase(noteId);
 }
 
 // TODO: finish implementing this
-void NoteManager::editNote(int noteToEditId){
-    for(Note& note: notes){
+void NoteManager::editNote(int noteToEditId) {
+    for (Note& note : notes) {
         if (note.id == noteToEditId) {
             std::cout << "Current note" << note << std::endl;
             std::string newContent = getUserOutput("Enter new content");
             std::string newCategoryName = getUserOutput("Enter new category name (leave empty to keep current): ");
-            std::string newCategoryDescription = getUserOutput("Enter new category description (leave empty to keep current): ");
+            std::string newCategoryDescription =
+                getUserOutput("Enter new category description (leave empty to keep current): ");
 
             if (!newContent.empty()) note.content = newContent;
             if (!newCategoryName.empty()) note.category.setName(newCategoryName);
@@ -224,10 +196,10 @@ void NoteManager::editNote(int noteToEditId){
             noteMap[note.id] = note;
 
             json updatedJson = json::array();
-            for (const Note& note: notes){
+            for (const Note& note : notes) {
                 updatedJson.push_back(note.toJson());
             }
-            
+
             std::ofstream jsonFile(notesJsonPath);
             jsonFile << updatedJson.dump(4);
             jsonFile.close();
@@ -238,20 +210,18 @@ void NoteManager::editNote(int noteToEditId){
     std::cout << "Note with id: " << noteToEditId << "not found" << std::endl;
 }
 
-void newThingsToRemember(){
-
+void newThingsToRemember() {
     // input file -- wejśćie - czyli do czytania
-    std::ifstream inputFile(notesFilePath); 
+    std::ifstream inputFile(notesFilePath);
     // output file - wyjśćie, czyli do pisania
-    std::string fileData; 
-    if (inputFile.is_open()){
-        inputFile >> fileData; // z plik --> do zmiennej
+    std::string fileData;
+    if (inputFile.is_open()) {
+        inputFile >> fileData;  // z plik --> do zmiennej
         inputFile.close();
     }
     std::ofstream outputFile(notesFilePath);
-    if (outputFile.is_open()){
-        outputFile << "Something new"; // pliczek <--- jakies rzeczy 
+    if (outputFile.is_open()) {
+        outputFile << "Something new";  // pliczek <--- jakies rzeczy
         outputFile.close();
     }
-
 }

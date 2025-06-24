@@ -1,8 +1,9 @@
 
-#include "NoteManager.hpp"
 #include <iostream>
+#include "NoteManager.hpp"
 
-int main(){
+
+void run_manager() {
     NoteManager manager;
     std::string output;
     bool isRunning = true;
@@ -14,13 +15,13 @@ int main(){
             switch (choice) {
                 case ManagerChoice::ADD: {
                     std::cin.ignore();
-                    std::string noteContent  = getUserOutput("Enter note");
+                    std::string noteContent = getUserOutput("Enter note");
                     std::string categoryName = getUserOutput("Enter category name");
                     std::string categoryDescription = getUserOutput("Enter category description");
-                    
+
                     manager.addNote(noteContent, Category(categoryName, categoryDescription));
                     break;
-                } 
+                }
                 case ManagerChoice::SEARCH: {
                     std::cin.ignore();
                     std::string searchedNote;
@@ -59,11 +60,17 @@ int main(){
                     break;
                 }
             }
-        }
-        catch(const std::invalid_argument& exception ){
+        } catch (const std::invalid_argument& exception) {
             std::cout << "Wrong input given" << std::endl;
         }
     }
+}
 
+int main() {
+    std::string name = "Paweł";
+    int score = 42;
+    NOTE_INFO("User %s scored %d points", name.c_str(), score);
+    NOTE_DEBUG("Checking %s at line %d", __FILE__, __LINE__);
+    NOTE_ERROR("Could not open file: %s", "config.json");
     return 0;
 }
