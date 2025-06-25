@@ -111,6 +111,16 @@ namespace text {
     }
 }
 
+enum class HttpResponse: uint16_t {
+    CREATED        = 201,
+    OK             = 200,
+    NOT_AUTHORIZED = 203, 
+
+    BAD_REQUEST    = 400,
+    FORBIDDEN      = 403,
+    NOT_FOUND      = 404,
+
+};
 // -----------------------------
 // Funkcja main
 // -----------------------------
@@ -131,6 +141,12 @@ int main() {
     LOG(math::square(12));
     geometry::Point point = geometry::makePoint(3,12);
     LOG(point.xAxis + point.yAxis);
-    std::cout << "To upper: " << text::toUpper("manana") << std::endl;
-    std::cout << "Reversed: " << text::reverse("manana") << std::endl;
+    
+    HttpResponse response = HttpResponse::BAD_REQUEST;
+    uint8_t code = static_cast<uint8_t>(response);
+    if (response == HttpResponse::NOT_AUTHORIZED){
+        std::cout << "To upper: " << text::toUpper("manana") << std::endl;
+        std::cout << "Reversed: " << text::reverse("manana") << std::endl;
+    }
+
 }
