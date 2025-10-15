@@ -34,7 +34,7 @@ std::string SimpleUser::encriptUserPassword() {
     MessageManager manager("Enter your password");
     std::string userPass = "";
     while(true){
-        userPass =  manager.ManageInputMessage();
+        userPass = manager.ManageInputMessage();
         if (!isPasswordStrongEnough(userPass)) {
             std::cout << "Password "<< userPass << " is too weak. Check password rules." << std::endl;
             continue;
