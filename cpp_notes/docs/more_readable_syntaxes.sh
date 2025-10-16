@@ -1,4 +1,4 @@
-
+# ------------Koncepty ------------------
 Koncepcja:
     - include/ - deklaracja funckji
     - src/     - implementaja funkcji
@@ -12,3 +12,68 @@ Dokumentacja:
     czytelna jasna co sie tam dzieje
         przykłady, tyip
     
+# ------------Jak kompilować | budować ------------------
+
+Uruchamianie programów:
+    Jak mamy Cmaka to w projekcie robimy
+        mkdir build && cd build
+        cmake .. - generuje pliki buildowe
+        cmake --build . - buduje projekt
+        ./main - wykonuje program
+
+# ------------Co robią HPP | CPP------------------
+Pliki i używanie ich:
+Teoria pliki: 
+    .hpp - plik nagłowkowy    
+        - mówi "co "funkcje klasy itp"" istnieje
+        - piszemy deklaracje bez implementacji
+        - jest jak interface (umowa), mówi plikom co mogą wywołać
+
+    .cpp - implemtancja,
+        - mówi jak "funkcja, klasa itp" działa
+        - definicje, co dokładnie robi funkcja / metoda / klasa
+        - silnik pod maską, logika 
+
+# ------------------HPP | CPP------------------
+Tworzenie plików nagłowkowych (hpp) | implementacyjnych (cpp)
+    w hpp: piszemy same deklaracje funkcji / klas itp
+    w cpp: importujemy hpp
+        #include "nazwa.hpp"
+    i piszemy implementacje do danych rzeczy co są zadeklarowane 
+
+    Przy kompilacji:
+        kompiluje main.cpp - wie o Begin::print()
+            bo widzi deklaracje w .hpp
+        kompiluje plik.cpp - zna definicje Begin::print()
+    
+    Linker łączy to razem:
+        widzi main.cpp wywołuje funkcje, .cpp dostarcza implementacje
+            wiec łączy kawąłki razem i daje .exe
+
+#---------CMAKE------------
+Cmake:
+    - jest to generator projektu:
+        - czyta CMakeLists.txt
+        cd build && cmake ..
+        - tworzy pliki konfiguracji budowania
+            - tylko raz musi to zrobić ( dopóki struktura projektu sie nie zmieni)
+        - uruchamiamy tylko wtedy gdy:
+            - dodajemy nowe pliki .cpp
+            - zmieniamy CMakeLists.txt
+            - kasujemy / zmieniamy / przenosimy coś z projektu
+        
+        cmake --build .
+            - kompilacja (build)
+            - bierze wygenerowane przez CMake pliki
+            - kompiluje wszystkie .cpp
+            - linkuje wynik w psotaci binarki build/main.exe
+
+
+#-----------------------------
+Automatyzacja w vs codzie:
+    Rozszerzenie CMake Tools
+    Select CMakeLists.txt - 
+    potem kompilator GC 12.2.0 archlinux
+        # jak coś napsujesz to możesz zrobić reconfigure
+        # druga opcja w CMake Tools
+        

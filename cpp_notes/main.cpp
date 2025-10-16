@@ -8,9 +8,13 @@ void namespace_playground(){
     End::print();
     using namespace Begin;
     print();
+    Out::Inner::write();
+    Out::Inner::read();
 }
 
 int main(){
     namespace_playground();
+    
     return 0;
 }
+
