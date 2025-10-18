@@ -1,6 +1,9 @@
 
+// src/namespaces.cpp
+
 #include "namespaces.hpp"
 
+/*-------------- DEFINITIONS ----------------------*/
 namespace Begin
 {
     void print()

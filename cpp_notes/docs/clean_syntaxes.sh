@@ -50,6 +50,10 @@ Tworzenie plików nagłowkowych (hpp) | implementacyjnych (cpp)
         widzi main.cpp wywołuje funkcje, .cpp dostarcza implementacje
             wiec łączy kawąłki razem i daje .exe
 
+    Z reguły w nagłówkach przechowujemy 
+        krótki czysty kod 
+    A większą logike w .cpp
+
 #---------CMAKE------------
 Cmake:
     - jest to generator projektu:
@@ -89,3 +93,30 @@ Automatyzacja w vs codzie:
         # jak coś napsujesz to możesz zrobić reconfigure
         # druga opcja w CMake Tools
         
+Różnice referencja i pointer:
+    referencja - przechowuje adres przypisanego mu obiektu
+        - jest jakby aliasem na ten oryginalny obiekt
+    
+        Musi być od razu zdefiniowana przy deklaracaji:
+            - inicjalizacja od razu
+            int& number = 12; // od razu przevhowuje adres 12
+        Nie można zmienić obiektu przypisanego do referencji
+            - nie pozwala zmieniać tego adresu
+            int a = 1, b = 2;
+            int &ref = a;
+            ref = b ; // nie zmieni obiektu tylko jego wartość
+                # a = 2 wtedy
+        Nie może być nullptr - bo w sumie po co
+
+
+    Pointer:
+        też wskazuje na obiekt jak referencja
+        możę być inicjalizowana bez przypisania
+            int *ptr; // można jak najbardziej
+            lub nullptr
+            
+        możę zmieniać ten adres
+            ptr = &a;
+            pr = &b; // zmieniamy obiekt
+            
+
