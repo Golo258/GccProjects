@@ -10,32 +10,33 @@
     DOCUMENTATION:
         struct - grupa zmiennych /funkcji
             która opisuje obiekt logiczny
-            mały kontener na dane/mini klasa 
+            mały kontener na dane/mini klasa
             ale z domyślnym dostępem PUBLIC
         składania
             struct Nazwa {
                 zmienne
             };
         Waże:
-            w .hpp deklarujemy całą strukture 
+            w .hpp deklarujemy całą strukture
             jakie pola potrzebuje itp, bo to jest typ danych
                 i kompilator potrzebuje znać rozmiar tego typu
                 żeby móc zarezerwować miejsce na stosie / w macie itp
             w .cpp na przykłąd tylko funkcje struktur
                 strucktura::funkcja() {definicja}
-        
+
         Wykonywanie:
             nazwaStruktury  obiekt{argumenty} -- { } -> klamrowe
 */
 
-struct Person {
+struct Person
+{
     std::string name;
     int age{};
-    
-    void introduce() const;  // deklaracja metody (ciało w .cpp)
+
+    void introduce() const; // deklaracja metody (ciało w .cpp)
 };
 
-void print_person(const Person& p);
+void print_person(const Person &p);
 
 /*
     Zagnieżdżone strukutry
@@ -45,12 +46,14 @@ void print_person(const Person& p);
         int score;
     } player{"Bob", 51};
 */
-struct Address {
+struct Address
+{
     std::string city;
     std::string street;
 };
 
-struct Citizen {
+struct Citizen
+{
     Person person;
     Address address;
     bool isInTown;
@@ -63,15 +66,15 @@ struct Citizen {
         - automatycznie wykonuje sie przy tworzeniu obiektu
         - inicjalizuje pola struktury
 
-    albo poprzez 
+    albo poprzez
         NazwaStruktury(wartosci){
             pole = wartosc
         }
-        alboo 
+        alboo
         Nazwa (wartosci)
             : pole(wartosc) # i to jest lepsze chyba
             {ciało konstruktora, może b yć puste}
-        
+
     Lista inicjalizacyjna a ten pierwszy różni sie tym że:
         że w liście pola ą przypisywyna w momencie tworzenia
         a w normalnym dopiero po utworzeniu obiektu
@@ -81,22 +84,25 @@ struct Citizen {
                 :pole1("domyslna"), pole2(wartosc) {}
 
     === Destruktory:
-        funkcja odpalana gdy obiekt jest niszony 
+        funkcja odpalana gdy obiekt jest niszony
             wychodzi ze scopa- zakresu, lub przez delete
     Skłądania:
         ~Nazwa() {ciało }
 */
 
-struct Product {
+struct Product
+{
     std::string name;
     int amount;
 
-    Product(std::string p_name, int p_amount){
+    Product(std::string p_name, int p_amount)
+    {
         name = p_name;
         amount = p_amount;
         std::cout << "Creating product\n";
     }
-    ~Product(){
+    ~Product()
+    {
         std::cout << "\nDestroying product: " << name << std::endl;
     }
     // albo
@@ -107,10 +113,10 @@ struct Product {
     Konstruktor kopiujacy:
         to specjalna funkcja w struktrach
         która tworzy nowy obiekt jako kopie innego
-    
+
         Person p1{"ALa", 25};
         Prson p2 = p1; // wywołuje sie konstruktor kopiujący
-    
+
     Kompilator tworzy go automatycznie jeśli nie zdefinujesz swojego
 
 */
@@ -125,16 +131,19 @@ struct Product {
 */
 
 // Przykłąd implemetacji
-struct PersonWithCoping {
+struct PersonWithCoping
+{
     std::string name;
     int age;
     PersonWithCoping();
-    PersonWithCoping(const PersonWithCoping& other)
-        : name(other.name), age(other.age) {
+    PersonWithCoping(const PersonWithCoping &other)
+        : name(other.name), age(other.age)
+    {
         std::cout << "Copying constructor called\n";
     }
 
-    PersonWithCoping& operator=(const PersonWithCoping& other){
+    PersonWithCoping &operator=(const PersonWithCoping &other)
+    {
         name = other.name;
         age = other.age;
         return *this;
@@ -143,29 +152,28 @@ struct PersonWithCoping {
 
 /*
     Przekazywanie obiektu do funkcji
-        normalnego 
+        normalnego
         przez referencje
         przez wskaźnik
-    const klasa& 
+    const klasa&
         - funkcja odczytuje tylko dane
         - bez kopiowania, bezpiecznie
-    klasas& 
-        - funkcja zmienia obiekt 
+    klasas&
+        - funkcja zmienia obiekt
         - dostep do oryginału
     Person *- może mieć nullptr- sprawdzamy brak obiektu
     Person - osobna kopia obikeut, lokalne operacje
 */
 void show_by_value(Product product);
-void show_by_reference(const Product& product);
-Product& change_object_by_reference(Product &product);
-Product* change_object_by_pointer(Product *product);
-void show_by_pointer(const Product* product);
-
+void show_by_reference(const Product &product);
+Product &change_object_by_reference(Product &product);
+Product *change_object_by_pointer(Product *product);
+void show_by_pointer(const Product *product);
 
 /*
     Zarzadzanie pamiecia w C++
     stack /heap
-        stos 
+        stos
             automatycznie zarzadzany przez program
             zmienne lokalne, normalnie tworzone obiektu
             np: Person p {};
@@ -180,26 +188,27 @@ void show_by_pointer(const Product* product);
 
         alokowanie / zwalnianie pamieci
             new /delete
-            - wywołanie z new zwraca wskaźnik do 
+            - wywołanie z new zwraca wskaźnik do
                 utworzonego obiektu
             - aby można bylo to zrobić, to musi mieć
                 zdefiniowany konstruktor
 
 */
 
-struct Group {
+struct Group
+{
     std::string name;
-    Product* product; // wskznik na obiekt dynamiczny
+    Product *product; // wskznik na obiekt dynamiczny
 
     Group(std::string n, std::string product_name)
-        :name(n), product(new Product(product_name, 30))
+        : name(n), product(new Product(product_name, 30))
     {
         std::cout << "Group created successfully \n";
     }
 
-    ~Group(){
-        delete product; // zwalnianie zasobów, wymagane 
+    ~Group()
+    {
+        delete product; // zwalnianie zasobów, wymagane
         std::cout << "Group destroyed\n";
     }
 };
-

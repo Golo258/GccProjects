@@ -1,6 +1,8 @@
 #include <iostream>
 #include "namespaces.hpp"
 #include "structures.hpp"
+#include "classess.hpp"
+#include "collections.hpp"
 /* 
     Main function to execute notes functions and classes methods
 */
@@ -64,10 +66,10 @@ void memory_runner(){
 }
 
 int main(){
-    namespaces_runner();
-    structures_runner();
-    memory_runner();
-
+    // namespaces_runner();
+    // structures_runner();
+    // memory_runner();
+    classes_runner()
     return 0;
 }
 

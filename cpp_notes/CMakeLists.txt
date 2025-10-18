@@ -12,6 +12,8 @@ set(SOURCES
     main.cpp
     src/namespaces.cpp
     src/structures.cpp
+    src/classess.cpp
+    src/collections.cpp
 )
 
 add_executable(
