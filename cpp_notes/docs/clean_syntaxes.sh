@@ -68,7 +68,19 @@ Cmake:
             - kompiluje wszystkie .cpp
             - linkuje wynik w psotaci binarki build/main.exe
 
-
+Syntaxes:
+    cmake_minimum_required(VERSION 3.14)
+        określa jaką  min wersje c++ używamy
+    project(nazwa)
+       okresla nazwe projektu
+    set(CMAKE_CXX_STANDARD 17)
+        ustawia standard C++ dla kompilatora (==-std=c++17.)
+    include_directories(include)
+        dodaje ścieżki gdzie Cmake ma szukać plików nagłowkowych
+        .hpp .h  -- i też biblioteki zewnętrzne(== -Iinclude)
+    add_executable(main main.cpp src/namespace_notes.cpp)
+        - definicja pliku wykonywalnego
+        z tych plików .cpp zbuduj program main
 #-----------------------------
 Automatyzacja w vs codzie:
     Rozszerzenie CMake Tools

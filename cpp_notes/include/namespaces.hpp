@@ -17,7 +17,7 @@
     Można stworzyć alias do przestrzeni nazw
         namespace IO = App::IO;
         IO::read();
-        
+
     Można tworzyć anonimowe przestrzenie nazw
         namespace {
             funckja() { deklaracja }
@@ -25,10 +25,12 @@
     taka przestrzeń jest static i widoczna tylko w danym .cpp
 
 */
-namespace Begin {
+namespace Begin
+{
     void print();
 }
-namespace End {
+namespace End
+{
     void print();
 }
 /*
@@ -36,14 +38,17 @@ namespace End {
         od C++17 można wewnętrzne deklarować jako
         namespace Out::In {}
 */
-namespace Out {
-    namespace Inner {
+namespace Out
+{
+    namespace Inner
+    {
         void read();
         void write();
     }
 }
 // C++17
-namespace App::IO {
+namespace App::IO
+{
     void read();
     void write();
 }
@@ -54,21 +59,31 @@ namespace App::IO {
     API::append_list() # domyślnie V1
     API::v2::append_list() # jawnie v2
 
-    inline daje coś takiego że jest widoczne 
+    inline daje coś takiego że jest widoczne
         jakby v1 było bezpośednio w API
-    
-        wtedy traktuejmy na przykłąd tą wersje v1
+
+        wtedy traktujemy na przykłąd tą wersje v1
             jakby była domyslna/aktualna wersja
         a inne już musimy wymusić
 
     Nie może być przez to dwóch inner inline namespaców
+
+    Można w namespacach trzymać takzę klasy i struktury
+        Gdy przekazujemy w danym namespacie do funkcji
+            inną strukture danych to ona przy definicji automatycznie
+        wie że to jest ten własnie tych i nie trzeba tego precyzować
+
 */
-namespace API {
-    inline namespace v1 {
-        void append_list();
+namespace API
+{
+    inline namespace v1
+    {
+        struct Vector_v1;
+        void append_list(Vector_v1 vector);
     }
-    namespace v2 {
-        void append_list();
+    namespace v2
+    {
+        class Vector_v2;
+        void append_list(Vector_v2 vector);
     }
 }
-

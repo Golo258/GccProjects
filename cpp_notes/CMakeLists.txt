@@ -7,4 +7,4 @@ set(CMAKE_CXX_STANDARD 17)
 
 include_directories(include)
 
-add_executable(main main.cpp src/namespace_notes.cpp)
+add_executable(main main.cpp src/namespaces.cpp)

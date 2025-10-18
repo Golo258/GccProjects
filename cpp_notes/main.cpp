@@ -1,19 +1,22 @@
 #include <iostream>
-#include "namespace_notes.hpp"
+#include "namespaces.hpp"
 /* 
     Main function to execute notes functions and classes methods
 */
-void namespace_playground(){
+void namespaces_runner(){
     Begin::print();
     End::print();
     using namespace Begin;
     print();
     Out::Inner::write();
     Out::Inner::read();
+    // API::Vector_v1 vector1;
+    // API::append_list(vector1);
+    // API::v2::append_list();
 }
 
 int main(){
-    namespace_playground();
+    namespaces_runner();
     
     return 0;
 }
